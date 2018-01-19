@@ -1,0 +1,103 @@
+<div class="modal fade" id="unpaid">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="d-flex w-100 p-4 justify-content-around align-items-center">
+	<div class="d-flex w-50 m-auto bg-light p-4 border border-2 fullM flex-column">
+		<h3 class="text-center">Online Donation</h3>
+		<p>2% of every donation made to party is being transfered to Orphanage Homes</p>
+		<div class="form-group">
+		  <label for="full_name">Full Name</label>
+		  <input type="text" class="form-control" id="full_name" placeholder="Full Name">
+		</div>
+
+		<div class="form-group">
+		  <label for="email">Email</label>
+		  <input type="email" class="form-control" id="email" required placeholder="Email Address">
+		</div>
+
+		<div class="form-group">
+		  <label for="phone_number">Phone Number</label>
+		  <input type="text" class="form-control" id="phone_number" placeholder="Email Address">
+		</div>
+
+		<div class="form-group">
+			<label for="amount">Amount</label>
+			<input type="text" class="form-control" id="amount" value="" required placeholder="Amount">
+			<!-- <p class="help-block">Please fill the appropriate Amount here</p> -->
+		</div>
+		<form action="">
+			<script src="https://js.paystack.co/v1/inline.js"></script>
+			<button type="button" class="btn btn-primary btn-lg" onclick="payWithPaystack()">Pay Here</button>
+			<div class="col-md-12">
+				<img data-src="http://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
+			</div>
+			<script>
+				document.onreadystatechange = function() {
+					if (document.readyState === "complete") {
+						// console.log('why si this');
+						$("#paidSus").modal("hide");
+					}
+				}
+
+				function payWithPaystack() {
+					var theAmount = document.getElementById('amount').value
+					var thesplit = theAmount.split(',')
+					var arrTr = thesplit.map((item) => {
+						return item.trim()
+					})
+					var themjoin = arrTr.join('')
+					var finalAmount = themjoin * 100
+
+					if (!isNaN(finalAmount)) {
+
+						var handler = PaystackPop.setup({
+							key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+							email: document.getElementById('email').value,
+							amount: finalAmount,
+							ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+							metadata: {
+								custom_fields: [{
+									display_name: document.getElementById('full_name').value,
+									variable_name: "mobile_number",
+									value: document.getElementById('phone_number').value
+								}]
+							},
+							callback: function(response) {
+								response.full_name = document.getElementById('full_name').value
+								response.phone_number = document.getElementById('phone_number').value
+								response.email = document.getElementById('email').value
+								response.amount = document.getElementById('amount').value
+								response.purpose = "Donation to the Party"
+								response.status = "Success"
+								$.post('paid', response, function(data, textStatus, xhr) {
+									window.location.replace("http://lvh.me:5000")
+								});
+							}
+						});
+						handler.openIframe();
+					} else {
+						document.getElementById('amount').className = "form-control is-invalid"
+					}
+				}
+			</script>
+		</form>
+	</div>
+</div>

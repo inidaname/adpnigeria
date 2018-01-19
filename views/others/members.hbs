@@ -1,0 +1,181 @@
+<p style="margin-bottom: 12px;">
+<strong>{{member.recent}}</strong> Members Recently Registered on the portal in the last 48 hours
+</p>
+<input type="hidden" id="youths" value="{{member.youth}}">
+<input type="hidden" id="female" value="{{member.female}}">
+<input type="hidden" id="male" value="{{member.male}}">
+<input type="hidden" id="old" value="{{member.old}}">
+
+<div class="tile is-ancestor">
+	<div class="tile is-parent">
+	  <div class="tile is-child box">
+		 <p class="title-3">Present Statistic of Registered Members with Total of {{member.total}}</p>
+		 <canvas id="myChart" width="400" height="400"></canvas>
+		<script type="text/javascript">
+		// alternative to DOMContentLoaded event
+		document.onreadystatechange = function () {
+		  if (document.readyState === "interactive") {
+			  var ctx = document.getElementById("myChart");
+			  var youths = document.getElementById('youths').value,
+			  		old = document.getElementById('old').value,
+					female = document.getElementById('female').value,
+					male = document.getElementById('male').value;
+			  var myChart = new Chart(ctx, {
+				  type: 'bar',
+				  data: {
+					  labels: [{{#each member.stateName}} "{{this.name}}", {{/each}}],
+					  datasets: [{
+						  label: 'Statistic of Registered Member According to States',
+						  data: [{{#each member.stateName}} {{this.num}}, {{/each}}],
+						  backgroundColor: [
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)',
+							  'rgba(255, 99, 132, 0.2)',
+							  'rgba(255, 206, 86, 0.2)',
+							  'rgba(75, 192, 192, 0.2)',
+							  'rgba(153, 102, 255, 0.2)',
+							  'rgba(255, 159, 64, 0.2)',
+							  'rgba(54, 162, 235, 0.2)'
+						  ],
+						  borderColor: [
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(54, 162, 235, 1)',
+							  'rgba(255,99,132,1)',
+							  'rgba(255, 206, 86, 1)',
+							  'rgba(75, 192, 192, 1)',
+							  'rgba(153, 102, 255, 1)',
+							  'rgba(255, 159, 64, 1)',
+							  'rgba(255,99,132,1)',
+						  ],
+						  borderWidth: 1
+					  }]
+				  },
+				  options: {
+					  scales: {
+						  yAxes: [{
+							  ticks: {
+								  beginAtZero:true
+							  }
+						  }]
+					  }
+				  }
+			  });
+
+			  //Google Chart api
+			  // Load the Visualization API and the corechart package.
+			  google.charts.load('current', {'packages':['corechart']});
+
+			  // Set a callback to run when the Google Visualization API is loaded.
+			  google.charts.setOnLoadCallback(drawChart);
+
+			  // Callback that creates and populates a data table,
+			  // instantiates the pie chart, passes in the data and
+			  // draws it.
+			  function drawChart() {
+
+			  	// Create the data table.
+			  	var data = new google.visualization.DataTable();
+			  	data.addColumn('string', 'Topping');
+			  	data.addColumn('number', 'Slices');
+			  	data.addRows([
+			  		['Youth', {{member.youth}}],
+			  		['Elders', {{member.old}}]
+			  	]);
+			  	var data2 = new google.visualization.DataTable();
+			  	data2.addColumn('string', 'Topping');
+			  	data2.addColumn('number', 'Slices');
+			  	data2.addRows([
+					['Males', {{member.male}}],
+			  		['Female', {{member.female}}],
+			  	]);
+
+			  	// Set chart options
+			  	var options = {'title':'Statistics According to State',
+				'legend':'bottom',
+			  	'width': 400,
+			  	'height':300};
+
+			  	// Instantiate and draw our chart, passing in some options.
+			  	var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+			  	var chart2 = new google.visualization.PieChart(document.getElementById('chart_div2'));
+			  	chart2.draw(data2, options);
+			  	chart.draw(data, options);
+
+			  }
+		  }
+		}
+
+
+
+		</script>
+	  </div>
+	</div>
+<div class="tile is-6 is-vertical is-parent">
+    <div class="tile is-child box">
+		  <div id="chart_div"></div>
+
+    </div>
+    <div class="tile is-child box">
+      <p class="title">Two</p>
+		<div id="chart_div2"></div>
+    </div>
+  </div>
+</div>

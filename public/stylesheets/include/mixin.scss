@@ -1,0 +1,48 @@
+@mixin linear-gradient($direction, $color-stops...) {
+  background: nth(nth($color-stops, 1), 1);
+  background: -webkit-linear-gradient(legacy-direction($direction), $color-stops);
+  background: linear-gradient($direction, $color-stops);
+}
+
+@mixin mQ($arg...) {
+    @if length($arg) == 2 {
+        @media screen and (min-width: nth($arg, 1)) and (max-width: nth($arg, 2)) {
+            @content;
+        }
+    }
+}
+
+@mixin keyframes($animation-name) {
+  @keyframes #{$animation-name} {
+    @content;
+  }
+}
+@mixin animation($str) {
+  animation: #{$str};
+}
+@mixin transition($args...) {
+  transition: $args;
+}
+
+// border-radius mixin
+@mixin border-radius($radius) {
+  border-radius: $radius;
+  padding: $radius / 2;
+  background-clip: padding-box;
+}
+@mixin border-top-radius($radius) {
+  border-top-right-radius: $radius;
+  border-top-left-radius: $radius;
+}
+@mixin border-right-radius($radius) {
+  border-top-right-radius: $radius;
+  border-bottom-right-radius: $radius;
+}
+@mixin border-bottom-radius($radius) {
+  border-bottom-right-radius: $radius;
+  border-bottom-left-radius: $radius;
+}
+@mixin border-left-radius($radius) {
+  border-top-left-radius: $radius;
+  border-bottom-left-radius: $radius;
+}

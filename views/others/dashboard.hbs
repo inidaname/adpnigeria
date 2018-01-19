@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Atom Bulma </title>
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.1/css/bulma.min.css" />
+	 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+	 <link rel="stylesheet" href="http://lvh.me:5000/stylesheets/dashboard.css">
+	 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+	 <script src="https://js.paystack.co/v1/inline.js"></script>
+  </head>
+  <body>
+	  <main class="main">
+		  <header class="header is-success">
+			  <!-- <img src="http://lorempixel.com/100/80" alt=""> -->
+			  <section class="section">
+			   <div class="nav">
+					<div class="side-profile">
+						<img src="{{json.passport}}" width="200" height="200" alt="" class="is-round">
+						<div class="name">
+							<h5 class="is-size-4">{{json.full_name}}</h5>
+							<p>Little Description</p>
+						</div>
+					</div>
+					<ul class="listed-navs is-size-4">
+						<li><span>Home</span> <i class="fa fa-home"></i></li>
+						<li><span>Profile</span> <i class="fa fa-male"></i></li>
+						<li><span>Platform</span> <i class="fa fa-black-tie"></i></li>
+					</ul>
+			   </div>
+			  </section>
+		  </header>
+		  <div class="something">
+			  {{#if admin}}
+			  <div class="tabs is-centered is-fullwidth">
+			    <ul class="is-size-7-mobile">
+			      <li class="is-active"><a>Member Stats</a></li>
+			      <li><a>Candidates</a></li>
+			      <li><a>Authority</a></li>
+			    </ul>
+			  </div>
+			  {{/if}}
+			  {{{body}}}
+		  </div>
+	  </main>
+	  <script src="http://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+	  <script src="http://lvh.me:5000/components/chart.js/dist/Chart.bundle.min.js" charset="utf-8"></script>
+	  <script src="http://lvh.me:5000/javascripts/dashboard.js" charset="utf-8"></script>
+  </body>
+</html>

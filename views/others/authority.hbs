@@ -1,0 +1,255 @@
+<div class="tile is-ancestor">
+	<!-- <div class="tile is-parent">
+   </div> -->
+  <div class="tile is-vertical is-parent">
+	  <div class="tile is-child box">
+		 <p class="title-2">Assign A Exco</p>
+	   <form id="exco" class="" action="">
+			<label class="label">Proposed Exco Phone Number</label>
+		  <div class="field has-addons">
+			 <div class="control">
+				<input class="input" type="text" id="pronat" name="phone_number" placeholder="Find a repository">
+			 </div>
+			 <div class="control">
+				<a class="button is-info" id="ntExco">
+				  Search
+				</a>
+			 </div>
+		  </div>
+	   </form>
+	   <div class="box ma-t">
+			<div class="figMe">
+				 <figure class="image">
+					 <img id="theNaImg" src="https://bulma.io/images/placeholders/128x128.png" width="128" height="128">
+				 </figure>
+				 <div id="showCon">
+					<p class="title-6">Name: <strong id="naName"></strong> </p>
+					 <p class="title-6">State: <strong id="naState"></strong></p>
+					 <p class="title-6">LGA: <strong id="naLga"></strong> </p>
+					 <p class="title-6">Ward: <strong id="naWard"></strong> </p>
+					 <p class="title-6">Fed Const: <strong id="fedCo"></strong> </p>
+					 <p class="title-6">Senate Zone: <strong id="SenSt"></strong> </p>
+					 <p class="title-6">Polling Unit: <strong id="naPolling"></strong> </p>
+				 </div>
+			 </div>
+	   </div>
+	   <div class="box">
+			<div class="control">
+			  <div class="select">
+				 <select name="level" id="levelReg">
+					<option value="">Select Level</option>
+					{{#each admin}}<option value="{{this}}">{{this}} Level</option> {{/each}}
+				 </select>
+			  </div>
+			</div>
+			<div class="field">
+				<input type="hidden" id="personalInfo" name="personalInfo" value="">
+				<input type="hidden" name="adminInfo" id="adminInfo" value="">
+			  <label class="positionReg">Position eg <small class="">Chairman</small></label>
+			  <div class="control">
+				 <input class="input" id="positionReg" type="text" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field is-grouped">
+			  <p class="control">
+				 <a onclick="sendData()" class="button is-link">
+					Save changes
+				 </a>
+			  </p>
+			</div>
+			<script type="text/javascript">
+				var sendData = () => {
+					var RegDatas = {
+						positionReg: document.getElementById('positionReg').value,
+						personalInfo: document.getElementById('personalInfo').value,
+						adminInfo: document.getElementById('adminInfo').value,
+						levelReg: document.getElementById('levelReg').value,
+						state: document.getElementById('naState').innerHTML,
+						lga: document.getElementById('naLga').innerHTML,
+						ward: document.getElementById('naWard').innerHTML,
+						pollingUnit: document.getElementById('naPolling').innerHTML
+					}
+					if (!RegDatas.personalInfo) {
+						document.getElementById('showCon').className = "has-text-danger"
+					} else if (!RegDatas.levelReg || !RegDatas.positionReg) {
+						document.getElementById('levelReg').className = "has-text-danger"
+						document.getElementById('positionReg').className = "input is-danger"
+					} else {
+						document.getElementById('showCon').className = ""
+						document.getElementById('levelReg').className = "has-text-primary"
+						document.getElementById('positionReg').className = "input"
+						$.post('http://lvh.me:5000/register/createExco', RegDatas, function(data, textStatus, xhr) {
+							console.log(data);
+						});
+						// console.log(RegDatas);
+					}
+				}
+			</script>
+	   </div>
+	  </div>
+  </div>
+  <div class="tile is-child box">
+	  <div class="content box">
+		   <p class="title is-size-5">
+				Add The Office Address Here
+			<p>
+				<small>This is the contact address Your Members will see and also when people visit adp.ng/yourpage <br> <span class="has-text-danger">If you have filled this form before please kindly ignore</span></small>
+			<form id="contact_add" action="http://lvh.me:5000/register/contact" method="post">
+				<label class="label">Phone Number</label>
+				<div class="field">
+				  <p class="control is-expanded">
+				    <input class="input" type="text" name="officeNo" required id="phone_number" placeholder="Add a phone Number">
+				  </p>
+				</div>
+				<div class="field">
+				  <label class="label">Secretariat Email</label>
+				  <p class="control has-icons-left">
+				    <input class="input" type="email" name="officeEmail" placeholder="Official Email Address">
+				    <span class="icon is-small is-left">
+				      <i class="fas fa-lock"></i>
+				    </span>
+				  </p>
+				</div>
+				<div class="field">
+				  <label class="label">Address</label>
+				  <div class="control">
+				    <textarea class="textarea" required name="address" id="address"></textarea>
+				  </div>
+				</div>
+				<button type="submit" class="button is-link">Add Address</button>
+				<input type="hidden" name="state" id='state' value="{{json.stName}}">
+				<input type="hidden" name="lga" id='lga' value="{{json.lgaName}}">
+				<input type="hidden" name="ward" id='ward' value="{{json.wardName}}">
+				<input type="hidden" name="level" id='level' value="{{json.level}}">
+				<input type="hidden" name="adminInfo" id='adminInfos' value="">
+			</form>
+	  </div>
+	  <script type="text/javascript">
+	  document.onreadystatechange = function() {
+	  	if (document.readyState === "complete") {
+			$('#adminInfos').val(getCookie('admin_id'))
+	  	}
+	  }
+
+
+		function getCookie(cname) {
+		    var name = cname + "=";
+		    var decodedCookie = decodeURIComponent(document.cookie);
+		    var ca = decodedCookie.split(';');
+		    for(var i = 0; i <ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0) == ' ') {
+		            c = c.substring(1);
+		        }
+		        if (c.indexOf(name) == 0) {
+		            return c.substring(name.length, c.length);
+		        }
+		    }
+		    return "";
+		}
+
+	  </script>
+	  <div class="content thisTab">
+		  <p class="title is-4">List of Pending Admin<p>
+			  <table>
+				  <thead>
+					  <tr>
+						  <th class="is-size-6-desktop is-size-7">Check</th>
+						  <th class="is-size-6-desktop is-size-7">Name</th>
+						  <th class="is-size-6-desktop is-size-7">Position</th>
+						  <th class="is-size-6-desktop is-size-7">Location</th>
+						  <th class="is-size-6-desktop is-size-7">Level</th>
+					  </tr>
+				  </thead>
+				  <tfoot>
+					  <tr>
+						  <th class="is-size-6-desktop is-size-7">Check</th>
+						  <th class="is-size-6-desktop is-size-7">Name</th>
+						  <th class="is-size-6-desktop is-size-7">Position</th>
+						  <th class="is-size-6-desktop is-size-7">Location</th>
+						  <th class="is-size-6-desktop is-size-7">Level</th>
+					  </tr>
+				  </tfoot>
+				  <tbody>
+					  {{#each adims}}
+					  <tr>
+						  <td class="is-size-6-desktop is-size-7"><a class="button is-success" onclick="approveUser('{{this._id}}')">A</a> &nbsp;<a class="button is-danger" onclick="declineUser('{{this._id}}')">D</a></td>
+						  <td class="is-size-6-desktop is-size-7">{{this.personalInfo.full_name}}</td>
+						  <td class="is-size-6-desktop is-size-7">{{this.position}}</td>
+						  <td class="is-size-6-desktop is-size-7">{{this.hislocation}}</td>
+						  <td class="is-size-6-desktop is-size-7">{{this.level}}</td>
+					  </tr>
+					  {{/each}}
+				  </tbody>
+			  </table>
+
+			  <script type="text/javascript">
+			  var approveUser = (theId) => {
+				  var theevent = event.path[2]
+
+				  $.ajax({
+					  url: 'http://192.168.8.101:8888/api/admin/'+theId,
+					  type: 'PATCH',
+					  data: {approve: true}
+				  })
+				  .done(function(data) {
+
+					  theevent.style.display = 'none';
+				  })
+				  .fail(function() {
+					  console.log(theevent);
+				  })
+				  .always(function() {
+					  console.log("complete");
+				  });
+
+			  }
+
+			  var theeventD, theIdD;
+			  var declineUser = (theId) => {
+				  theeventD = event.path[2]
+				  theIdD = theId
+				  var mymodal = document.getElementById('modalShow')
+				  document.getElementById('hiddenField').value = theIdD
+				  mymodal.className = "modal is-active"
+
+			  }
+
+			  var clearthis = () => {
+				  document.getElementById('modalShow').className = "modal"
+			  }
+
+			  var JustDecline = () => {
+				  // console.log(event.path[2].style.display = 'none');
+				  $.ajax({
+					  url: 'http://192.168.8.101:8888/api/admin/'+theIdD,
+					  type: 'DELETE',
+				  })
+				  .done(function(data) {
+					  document.getElementById('modalShow').className = "modal"
+					  theeventD.style.display = 'none';
+				  })
+				  .fail(function() {
+					  console.log(theevent);
+					  document.getElementById('modalShow').className = "modal"
+				  })
+				  .always(function() {
+					  console.log("complete");
+				  });
+			  }
+
+		  </script>
+	  </div>
+  </div>
+</div>
+<div class="modal" id="modalShow">
+  <div class="modal-background"></div>
+  <div class="modal-content box">
+	  <div class="content">
+		  <input type="hidden" id="hiddenField" value="">
+	   <p class="title is-5 has-text-centered has-text-danger">Are You Sure You Want Decline This Request<p>
+			<p class="has-text-centered"><a class="button is-danger" onclick="JustDecline()">Danger</a> <a class="button is-info" onclick="clearthis()">Info</a></p>
+	  </div>
+  </div>
+  <button class="modal-close is-large" onclick="clearthis()" aria-label="close"></button>
+</div>

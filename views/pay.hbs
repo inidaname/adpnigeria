@@ -1,0 +1,138 @@
+<div class="modal fade" id="unpaid">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>One fine body&hellip;</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="d-flex w-100 p-4 justify-content-around align-items-center">
+	<div class="d-flex w-50 m-auto bg-light p-4 border border-2 fullM flex-column">
+		<h3 class="text-center">Online Payment Space</h3>
+		<p>Member Name: <strong id="full_name">{{docs.full_name}}</strong> <br> Phone Number: <strong id="phone_number">08035938903</strong> <br>Email: <strong id="your_email">saniyhassan@gmail.com</strong> <br> TID Number: <strong>{{docs.MemberAuth.TempID}}</strong>			</p>
+
+		<div class="form-group">
+			<label for="pay_cat"><abbr title="Naira">N</abbr>100 Payment for</label>
+			<select class="form-control" id="pay_cat">
+				<option value="Membership Card" selected>Membership Card</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="pay_subs">Monthly Subscription <abbr title="Naira">N</abbr>100/month</label>
+			<select class="form-control" required name="subs" id="pay_subs">
+				<option value="">Select One</option>
+				<option value="3 Months">Plus 3 Months</option>
+				<option value="6 Months">Plus 6 Months</option>
+				<option value="1 Year">Plus 1 Year</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label for="amount">Total Amount</label>
+			<span type="text" class="form-control" id="amount">&nbsp;</span>
+			<input type="hidden" name="amount" id="amountVal" value="">
+			<!-- <p class="help-block">Please fill the appropriate Amount here</p> -->
+		</div>
+		<div class="alert alert-primary" id="showTotal" role="alert">
+			Please Select one of the Monthly Subscription above
+		</div>
+		<form action="">
+			<script src="https://js.paystack.co/v1/inline.js"></script>
+			<button type="button" id="payBtn" class="btn btn-primary btn-lg">Pay Here</button>
+			<div class="col-md-12">
+				<img data-src="http://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
+			</div>
+			<script>
+				document.onreadystatechange = function() {
+					if (document.readyState === "complete") {
+						// console.log('why si this');
+						$("#paidSus").modal("toggle");
+					}
+				}
+
+				function payWithPaystack() {
+					var handler = PaystackPop.setup({
+						key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+						email: document.getElementById('your_email').innerHTML,
+						amount: document.getElementById('amountVal').value,
+						ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+						metadata: {
+							custom_fields: [{
+								display_name: document.getElementById('full_name').innerHTML,
+								variable_name: "mobile_number",
+								value: document.getElementById('phone_number').innerHTML
+							}]
+						},
+						callback: function(response) {
+							$("#paidSus").modal("toggle");
+
+							function getCookie(cname) {
+							    var name = cname + "=";
+							    var decodedCookie = decodeURIComponent(document.cookie);
+							    var ca = decodedCookie.split(';');
+							    for(var i = 0; i <ca.length; i++) {
+							        var c = ca[i];
+							        while (c.charAt(0) == ' ') {
+							            c = c.substring(1);
+							        }
+							        if (c.indexOf(name) == 0) {
+							            return c.substring(name.length, c.length);
+							        }
+							    }
+							    return "";
+							}
+							setTimeout(function () {
+								response.purpose = "Membership card and " + document.getElementById('pay_subs').value + " Subscription"
+								response.amount = document.getElementById('amount').innerHTML
+								response.status = "Success"
+								response.userId = getCookie('user_id')
+
+								$.post('paid', response, function(data, textStatus, xhr) {
+									$.ajax({
+										url: 'http://192.168.8.101:8888/api/member/'+response.userId,
+										type: 'PATCH',
+										data: {MemberVerified: true}
+									})
+									.done(function(data) {
+										window.location.replace("http://dashboard.lvh.me:5000")
+										console.log("success", data);
+
+									})
+									.fail(function(err) {
+										console.log("error", err);
+									})
+								});
+
+                        //
+								// $.patch('http://192.168.8.101:8888/api/member/'+response.userId, {MemberAuth: true}, function(data, textStatus, xhr) {
+								// 	if (hostgrab[0] === "www") {
+								// 		window.location.replace('http://dashboard.'+hostgrab[1]+'.'+hostgrab[2]+':5000')
+								// 	} else {
+								// 		window.location.replace('http://dashboard.'+hostgrab[0]+'.'+hostgrab[1]+':5000')
+								// 	}
+                        //
+								// });
+							}, 15000);
+						},
+						onClose: function(jsk) {
+
+						}
+					});
+					handler.openIframe();
+				}
+			</script>
+		</form>
+	</div>
+</div>

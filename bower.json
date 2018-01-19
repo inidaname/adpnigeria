@@ -1,0 +1,36 @@
+{
+  "name": "adpnigeria",
+  "description": "ADP Web App Development with RESTFUL API",
+  "main": "app.js",
+  "authors": [
+    "Hassan Sani"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "^3.2.1",
+    "font-awesome": "^4.7.0",
+    "cloudinary": "^2.4.0",
+    "slick": "*",
+    "intl-tel-input": "^12.1.6",
+    "blueimp-load-image": "^2.17.1",
+    "watermarkjs": "^2.0.0",
+    "blueimp-file-upload": "^9.19.2",
+    "cloudinary-jquery": "^2.4.0",
+    "cloudinary-core": "^2.4.0",
+    "cloudinary-jquery-file-upload": "^2.4.0",
+    "bootpag": "^1.0.7",
+    "cleave.js": "^1.0.2",
+    "fastclick": "^1.0.6",
+    "animate.css": "^3.5.2",
+    "popper.js": "^1.12.9",
+    "chart.js": "^2.7.1"
+  }
+}

@@ -1,0 +1,97 @@
+
+<section class="section admin">
+ <div class="container">
+  <div class="columns">
+    <div class="column is-full-mobile is-two-quarter-tablet is-half-desktop is-hafl-widescreen is-offset box">
+		 <div class="content">
+			 <h2 class="title has-text-centered">Admin Application</h2>
+			 <div class="field">
+				 <label class="label">Name</label>
+				 <div class="control">
+					 <input class="input" type="text" disabled name="full_name" value="{{json.full_name}}" placeholder="Text input">
+				 </div>
+			 </div>
+			 <div class="field">
+				 <label class="label">Member ID</label>
+				 <div class="control">
+					 <input class="input" type="text" disabled name="MemberAuth.TempID" value="{{json.MemberAuth.TempID}}" placeholder="Text input">
+				 </div>
+			 </div>
+			 <form id="adminApply" action="" method="post">
+				 <input type="hidden" name="personalInfo" value="{{json._id}}">
+				<div class="field">
+				  <label class="label">Phone Number</label>
+				  <div class="control">
+				    <input class="input" type="text" id="phoneThings" name="phone" value="{{json.phone_number}}" placeholder="Text input">
+				  </div>
+				</div>
+				<div class="field">
+				  <label class="label">Admin Level</label>
+				  <div class="control">
+				    <div class="select">
+				      <select id="adminLe" name="level">
+				        <option value="">Select dropdown</option>
+				        <option value="National">National</option>
+				        <option value="State">State Level</option>
+				        <option value="Local Govt">Local Govt</option>
+				        <option value="Ward">Ward Level</option>
+				        <option value="Polling Unit">Polling Unit</option>
+				      </select>
+				    </div>
+				  </div>
+				</div>
+				<div class="field">
+				  <label class="label">Admin Position</label>
+				  <div class="control">
+				    <div class="select">
+				      <select id="adminpos" name="position">
+							<option value="">Select dropdown</option>
+				        <option value="Administrative Secretary">Admin Secretary</option>
+				        <option value="Head of ICT">Head of ICT</option>
+				      </select>
+				    </div>
+				  </div>
+				</div>
+				<div class="is-hidden" id="detIn" role="alert">Your Application as an Admin officer is still pending. If you think this is taking too long call the Office number thank you <a class="button is-primary" href="http://dashboard.lvh.me:5000">Go Home</a></div>
+				<div class="field is-grouped has-items-centered">
+				  <div class="control">
+				    <button class="button is-link is-large" id="adminBtn" type="submit">Submit</button>
+				  </div>
+				</div>
+			 </form>
+		 </div>
+    </div>
+  </div>
+ </div>
+</section>
+
+<script type="text/javascript">
+
+		function getCookie(cname) {
+		    var name = cname + "=";
+		    var decodedCookie = decodeURIComponent(document.cookie);
+		    var ca = decodedCookie.split(';');
+		    for(var i = 0; i <ca.length; i++) {
+		        var c = ca[i];
+		        while (c.charAt(0) == ' ') {
+		            c = c.substring(1);
+		        }
+		        if (c.indexOf(name) == 0) {
+		            return c.substring(name.length, c.length);
+		        }
+		    }
+		    return "";
+		}
+
+		if (getCookie('admin_req')) {
+			var adminLe = document.getElementById('adminLe')
+			var adminpos = document.getElementById('adminpos')
+			var phoneThings = document.getElementById('phoneThings')
+			var adminBtn = document.getElementById('adminBtn')
+			adminLe.setAttribute('disabled', true)
+			adminpos.setAttribute('disabled', true)
+			phoneThings.setAttribute('disabled', true)
+			adminBtn.setAttribute('disabled', true)
+			document.getElementById("detIn").className = "notification is-info";
+		}
+</script>

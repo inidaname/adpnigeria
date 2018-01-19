@@ -1,0 +1,120 @@
+<div class="tile is-ancestor">
+	<div class="tile is-parent">
+     <div class="tile is-child box is-flex-desktop theMargin">
+		  <div class="card">
+		    <div class="card-content">
+		      <div class="media">
+		        <div class="media-left">
+		          <figure class="image is-48x48">
+		            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+		          </figure>
+		        </div>
+		        <div class="media-content">
+		          <p class="title is-4">John Smith</p>
+		          <p class="subtitle is-6">@johnsmith</p>
+		        </div>
+		      </div>
+
+		      <div class="content">
+		        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+		        Phasellus nec iaculis mauris. <a>@bulmaio</a>.
+		        <a href="#">#css</a> <a href="#">#responsive</a>
+		        <br>
+		        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+		      </div>
+		    </div>
+		  </div>
+     </div>
+   </div>
+  <div class="tile is-4 is-vertical is-parent">
+    <div class="tile is-child box">
+		 <a href="#" id="displayDon" class="button">Donate Today</a>
+		 <form id="donate" style="display: none; margin-top:20px;" method="post">
+			 <div class="content">
+			  <p class="title is-size-5">Donate Today<p>
+			 </div>
+			 <div class="field">
+			   <label class="label">Full Name</label>
+			   <div class="control">
+					{{json.full_name}}
+			     <input class="input" type="hidden" id="full_name" name="full_name" value="{{json.full_name}}" placeholder="{{json.full_name}}">
+			   </div>
+			 </div>
+			 <div class="field">
+			   <label class="label">Email</label>
+			   <div class="control">
+					{{json.email}}
+			     <input class="input" type="hidden" name="email" value="{{json.email}}" id="email">
+			   </div>
+			 </div>
+			 <div class="field">
+			   <label class="label">Phone Number</label>
+			   <div class="control">
+					{{json.phone_number}}
+			     <input class="input" type="hidden" id="phone_number" value="{{json.phone_number}}" placeholder="Text input">
+			   </div>
+			 </div>
+			 <div class="field">
+			   <label class="label">Amount</label>
+			   <div class="control">
+			     <input class="input" type="text" name="amount" id="amount" placeholder="Text input">
+			   </div>
+			 </div>
+			 <button class="button is-danger" type="button" onclick="payWithPaystacks()" name="button">Donate Today</button>
+
+			 <script type="text/javascript">
+			 document.onreadystatechange = function() {
+				 if (document.readyState === "complete") {
+					 $('#displayDon').click(function(event) {
+					 	$('#donate').slideToggle('slow')
+					 });
+				 }
+			 }
+
+			 	function payWithPaystacks() {
+ 					var theAmount = document.getElementById('amount').value
+ 					var thesplit = theAmount.split(',')
+ 					var arrTr = thesplit.map((item) => {
+ 						return item.trim()
+ 					})
+ 					var themjoin = arrTr.join('')
+ 					var finalAmount = themjoin * 100
+
+ 					if (!isNaN(finalAmount) && finalAmount !== 0) {
+
+ 						var handler = PaystackPop.setup({
+ 							key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+ 							email: document.getElementById('email').value,
+ 							amount: finalAmount,
+ 							ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+ 							metadata: {
+ 								custom_fields: [{
+ 									display_name: document.getElementById('full_name').value,
+ 									variable_name: "mobile_number",
+ 									value: document.getElementById('phone_number').value
+ 								}]
+ 							},
+ 							callback: function(response) {
+ 								response.full_name = document.getElementById('full_name').value
+ 								response.phone_number = document.getElementById('phone_number').value
+ 								response.email = document.getElementById('email').value
+ 								response.amount = document.getElementById('amount').value
+ 								response.purpose = "Member Donation to the Party"
+ 								response.status = "Success"
+ 								$.post('http://lvh.me:5000/paid', response, function(data, textStatus, xhr) {
+ 									$('donate').slideToggle('slow')
+ 								});
+ 							}
+ 						});
+ 						handler.openIframe();
+ 					}
+ 				}
+			 </script>
+		 </form>
+    </div>
+    <div class="tile is-child box">
+      <p class="title">Two</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,322 @@
+<script type="text/javascript">
+document.onreadystatechange = function() {
+	if (document.readyState === "complete") {
+
+		$.getJSON('lists', function(json, textStatus) {
+			ThisMember.current = json.allMember;
+			var newArray = json.member.stateName
+			var obj = []
+
+			for (let key of Object.keys(newArray)) {
+				obj.push(newArray[key]);
+			}
+
+			obj.forEach((item) => {
+				$('#populate').append(`<div class='column is-one-third' onclick='getThePlace("`+item.name+`")'> <div class='box'> <p class='is-size-6'>Name of State: <strong> `+item.name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+item.num+`</strong></p> </div></div>`)
+			})
+
+		});
+	}
+}
+
+var toReload = () => {
+	location.reload()
+}
+
+var displayThem = (thepeople, theward, thelga, thestate) => {
+	$('#thePollName').html(thepeople)
+	$('#populate').css('display', 'none');
+	var viewPeople = ThisMember.come
+	var len = 0
+	$('#showTable').removeClass('is-hidden')
+	viewPeople.forEach((item) => {
+		if (thestate === item.stName) {
+			if (item.lgaName === thelga) {
+				if (item.wardName === theward) {
+					if (item.pollingUnit === thepeople) {
+						len++
+						$('#theViewPeople').append(`<tr><td>`+len+`</td><td>`+item.full_name+`</td><td>`+item.gender+`</td></tr>`)
+					}
+				}
+			}
+		}
+	})
+}
+
+
+var ThisMember = {
+  set current(name) {
+    this.come = name;
+  },
+  come: null
+}
+
+	var emptyLGAPPL = []
+
+
+	var getThePlace = function (getThePlace) {
+		var child = document.getElementById('populate').innerHTML = ' '
+		// var breadcrumb = document.getElementById('breadcrumb')
+
+		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getThePlace+'</a></li>')
+
+		emptyLGAPPL = []
+		$.getJSON('http://lvh.me:5000/register/getLGA', {statePlace: getThePlace}, function(json, textStatus) {
+			json.forEach(elemST => {
+				if ($.inArray(elemST.lgaName, emptyLGAPPL) === -1) {
+					emptyLGAPPL.push(elemST.lgaName)
+				}
+			});
+
+			var theOBJ = []
+
+			emptyLGAPPL.forEach((item) => {
+				theOBJ.push(item)
+				theOBJ[item] = {
+					name: item,
+					count: 0
+				}
+				theLGAs.forEach((theLGA) => {
+					if (getThePlace === theLGA.stName) {
+						if (theLGA.lgaName === item) {
+							theOBJ[item].count++
+							return theOBJ;
+						}
+					}
+				})
+			})
+
+			theOBJ.forEach((tellMe) => {
+				$('#populate').append(`<div class='column is-one-third' onclick='getTheLGA("`+theOBJ[tellMe].name+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Local Govt: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
+			})
+
+			$.getJSON('http://lvh.me:5000/register/senates', {stateReg: getThePlace}, function(jsonS, textStatus) {
+
+				var senates = jsonS.sen
+				var constit = jsonS.fedc
+
+				var Senatorial = [], FedConstituency = [];
+
+					senates.forEach((item) => {
+						Senatorial.push(item.senatorial_zone)
+						Senatorial[item.senatorial_zone] = {
+							name: item.senatorial_zone,
+							count: 0
+						}
+						theLGAs.forEach((senFed) => {
+						var DBLGAName = item.composition.split(",")
+						DBLGAName.forEach((itemSA) => {
+							var loCalGovt = itemSA.trim();
+							if (senFed.lgaName === loCalGovt) {
+								Senatorial[item.senatorial_zone].count++;
+							}
+						});
+					});
+				})
+				Senatorial.forEach((tellMe) => {
+					$('#senatesSide').append(`<div class='column is-one-third'> <div class='box is-info'> <p class='is-size-6'>Name of Senatorial Zone: <strong> `+Senatorial[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+Senatorial[tellMe].count+`</strong></p> </div></div>`)
+				})
+
+
+				// constit.forEach((itemFED) => {
+            //
+				// 	theLGAs.forEach((senFed) => {
+				// 	//querying mongodb to get the Federal  Constituency
+				// 	if (senFed.lgaName === 'Lagos Island') {
+				// 		FedConstituency.push('Lagos Island I/II')
+				// 		FedConstituency['Lagos Island I/II'] = {
+				// 			name: 'Lagos Island I/II',
+				// 			count: 0
+				// 		}
+				// 		FedConstituency['Lagos Island I/II'].count++
+				// 	} else if (senFed.lgaName === 'Mushin') {
+				// 		FedConstituency.push('Mushin I/II')
+				// 		FedConstituency['Mushin I/II'] = {
+				// 			name: 'Mushin I/II',
+				// 			count: 0
+				// 		}
+				// 		FedConstituency['Mushin I/II'].count++
+				// 	} else if (senFed.lgaName === 'Oshodi/Isolo') {
+				// 	FedConstituency.push('Oshodi/Isolo I/II')
+				// 	FedConstituency['Oshodi/Isolo I/II'] = {
+				// 		name: 'Oshodi/Isolo I/II',
+				// 		count: 0
+				// 	}
+				// 	FedConstituency['Oshodi/Isolo I/II'].count++
+            //
+				// 	} else if (senFed.lgaName === 'Surulere') {
+				// 		FedConstituency.push('Surulere I/II')
+				// 		FedConstituency['Surulere I/II'] = {
+				// 			name: 'Surulere I/II',
+				// 			count: 0
+				// 		}
+				// 		FedConstituency['Surulere I/II'].count++
+            //
+				// 	} else if (senFed.lgaName === 'Port Harcourt') {
+				// 		FedConstituency.push('Port Harcourt I/II')
+				// 		FedConstituency['Port Harcourt I/II'] = {
+				// 			name: 'Port Harcourt I/II',
+				// 			count: 0
+				// 		}
+				// 		FedConstituency['Port Harcourt I/II'].count++
+				// 	} else {
+				// 		FedConstituency.push(itemFED.fed_const_name)
+				// 		FedConstituency[itemFED.fed_const_name] = {
+				// 			name: itemFED.fed_const_name,
+				// 			count: 0
+				// 		}
+				// 		var regexstring = new RegExp("\\b"+senFed.lgaName+"\\b","ig") // regular expression to check Federal Constituency
+				// 			var FedName = itemFED.fed_const_name;
+				// 			if (FedName.match(regexstring) !== null) {
+				// 				FedConstituency[itemFED.fed_const_name].count++
+				// 			}
+				// 		}
+				// 	});
+            //
+				// })
+
+
+			});
+		});
+		var theLGAs = ThisMember.come;
+
+	}
+
+
+	var getTheLGA = (getTheLGA, getThePlace) => {
+		$('#breadcrumb a').removeAttr('aria-current')
+		$('#senatesSide').addClass('is-hidden')
+		var child = document.getElementById('populate').innerHTML = ' '
+
+		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getTheLGA+'</a></li>')
+
+		var emptyWARDPPL = []
+		$.getJSON('http://lvh.me:5000/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
+
+			var wardsBro = jsonW.docs
+			emptyWARDPPL = []
+
+
+			wardsBro.forEach(elemST => {
+				if ($.inArray(elemST.wardName, emptyWARDPPL) === -1) {
+					emptyWARDPPL.push(elemST.wardName)
+				}
+			});
+
+
+			var theOBJ = []
+
+			emptyWARDPPL.forEach((item) => {
+				theOBJ.push(item)
+				theOBJ[item] = {
+					name: item,
+					count: 0
+				}
+				theLGAs.forEach((theLGA) => {
+					if (getThePlace === theLGA.stName) {
+						if (theLGA.lgaName === getTheLGA) {
+							if (theLGA.wardName === item) {
+								theOBJ[item].count++
+								return theOBJ;
+							}
+						}
+					}
+				})
+			})
+
+			theOBJ.forEach((tellMe) => {
+				$('#populate').append(`<div class='column is-one-third' onclick='getThePoll("`+theOBJ[tellMe].name+`", "`+getTheLGA+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Ward: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
+			})
+		});
+		var theLGAs = ThisMember.come;
+
+	}
+
+
+	var getThePoll = (getThePoll, getTheLGA, getThePlace) => {
+		$('#breadcrumb a').removeAttr('aria-current')
+
+		var child = document.getElementById('populate').innerHTML = ' '
+		$('#breadcrumb').append('<li><a href="#" aria-current="page" onclick="toReload()">'+getThePoll+'</a></li>')
+
+		var emptyWARDPPL = []
+		$.getJSON('http://lvh.me:5000/register/getPolling', {wardName: getThePoll, stateName: getThePlace, localgovtName: getTheLGA}, function(jsonPU, textStatus) {
+
+
+
+			var PollingPoll = jsonPU
+
+
+			var theOBJ = []
+
+			PollingPoll.forEach((item) => {
+				theOBJ.push(item.psName)
+				theOBJ[item.psName] = {
+					name: item.psName,
+					count: 0,
+					people: []
+				}
+				theLGAs.forEach((theLGA) => {
+					if (getThePlace === theLGA.stName) {
+						if (theLGA.lgaName === getTheLGA) {
+							if (theLGA.wardName === getThePoll) {
+								if (theLGA.pollingUnit === item.psName) {
+									theOBJ[item.psName].count++
+									theOBJ[item.psName].people.push(theLGA)
+									return theOBJ;
+								}
+							}
+						}
+					}
+				})
+			})
+
+
+			theOBJ.forEach((tellMe) => {
+				$('#populate').append(`<div class='column is-one-third' onclick='displayThem("`+theOBJ[tellMe].name+`", "`+getThePoll+`", "`+getTheLGA+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Ward: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
+			})
+
+		});
+		var theLGAs = ThisMember.come;
+
+	}
+
+</script>
+<div class="section">
+	<nav class="breadcrumb is-small has-arrow-separator thisTab" aria-label="breadcrumbs">
+	  <ul id="breadcrumb">
+	  </ul>
+	</nav>
+
+<div  class="columns is-multiline" id="senatesSide">
+
+</div>
+<hr class="is-primary">
+<div  class="columns is-multiline" id="populate">
+
+</div>
+<div class="thisTab">
+	<table id="showTable" class="is-hidden table is-striped is-bordered is-hoverable is-fullwidth">
+		<div class="content">
+		 <p class="title is-size-6" id="thePollName"><p>
+		</div>
+		<thead>
+			<tr>
+				<th class="is-size-6-desktop is-size-7">No.</th>
+				<th class="is-size-6-desktop is-size-7">Name</th>
+				<th class="is-size-6-desktop is-size-7">Gender</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th class="is-size-6-desktop is-size-7">No.</th>
+				<th class="is-size-6-desktop is-size-7">Name</th>
+				<th class="is-size-6-desktop is-size-7">Gender</th>
+			</tr>
+		</tfoot>
+		<tbody id="theViewPeople">
+		</tbody>
+	</table>
+</div>
+
+</div>

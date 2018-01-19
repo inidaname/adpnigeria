@@ -1,0 +1,104 @@
+<div class="content has-text-centered">
+	<p class="title is-size-4 is-9 text-is-centered">
+		Profile Details
+	</p>
+	<small>To edit any of the information Below please contact the Party Admin for Voting purpose this feature has been disabled</small>
+</div>
+<div class="columns roundBorder is-8">
+  <div class="column box">
+	  <div class="content">
+	   <p class="title is-size-6">Personal Information<p>
+	  </div>
+	  <figure class="image thisTab is-128x128 has-text-centered is-fullwidth">
+	    <img src="{{json.passport}}">
+	  </figure>
+	  <figcaption class="has-text-centered">Member ID: {{json.MemberAuth.TempID}}</figcaption>
+	  <hr>
+	  <div class="field">
+	    <label class="label">Full Name</label>
+	    <div class="control">
+	      <input class="input" name="full_name" type="text" disabled value="{{json.full_name}}" placeholder="Full Name">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Email:</label>
+	    <div class="control">
+	      <input class="input" name="full_name" type="text" disabled value="{{json.email}}" placeholder="Full Name">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Phone Number</label>
+	    <div class="control">
+	      <input class="input" name="full_name" type="text" disabled value="{{json.phone_number}}" placeholder="Full Name">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Date of Birth</label>
+	    <div class="control">
+	      <input class="input" type="text" disabled value="{{json.dateofBirth}}">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Residencial Address</label>
+	    <div class="control">
+			 <p>{{json.residenceAdd}}</p>
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Country of Residence</label>
+	    <div class="control">
+	      <input class="input" type="text" disabled value="{{json.resCountry}}">
+	    </div>
+	  </div>
+  </div>
+  <div class="column box">
+	  <div class="content">
+	   <p class="title is-size-6">Voting Information<p>
+	  </div>
+	  <div class="field">
+	    <label class="label">State</label>
+	    <div class="control">
+	      <input class="input" type="text" value="{{json.stName}}" disabled>
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Senatorial Zone</label>
+	    <div class="control">
+	      <input class="input" type="text" value="{{json.Senatorial}}" disabled>
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Federal Constituency</label>
+	    <div class="control">
+	      <input class="input" type="text" value="{{json.FedConstituency}}" disabled>
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">State Constituency</label>
+	    <div class="control">
+	      <input class="input" type="text" disabled value="{{json.StateConstituency}}">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Local Govt</label>
+	    <div class="control">
+	      <input class="input" type="text" value="{{json.lgaName}}" disabled>
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Ward Name</label>
+	    <div class="control">
+	      <input class="input" type="text" disabled value="{{json.wardName}}">
+	    </div>
+	  </div>
+	  <div class="field">
+	    <label class="label">Polling Unit</label>
+	    <div class="control">
+	      <input class="input" type="text" value="{{json.pollingUnit}}" disabled>
+	    </div>
+	  </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+</script>

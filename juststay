@@ -1,0 +1,82 @@
+if (req.cookies.admin_req) {
+		fetch(process.env.ADDR+'/admin/'+req.cookies.admin_id)
+		.then((res) => {
+			return res.json();
+		}).then((theUser) => {
+			if (theUser.approve === true) {
+				theUserMe = theUser
+				res.cookie('admin_id', theUser.personalInfo._id)
+			} else {
+				res.render('others/regadmin', {title: 'Admin Section', json: json});
+			}
+		})
+}
+var theUserMe;
+res.clearCookie('admin_id')
+req.app.locals.layout = 'others/dashboard';
+// if (!req.cookies.admin_id) {
+// 	fetch(process.env.ADDR+'/admin/'+req.cookies.admin_id)
+// 	.then((res) => {
+// 		return res.json();
+// 	}).then((theUser) => {
+// 		if (theUser.personalInfo) {
+// 			theUserMe = theUser
+// 			res.cookie('admin_id', theUser.personalInfo._id)
+// 		} else {
+// 			res.redirect('dashboard.lvh.me:5000');
+// 		}
+// 	})
+// }
+	fetch(process.env.ADDR+'/admin/members')
+		.then((res) => {
+			return res.json();
+		}).then((members) => {
+			var states = ["ABIA", "ADAMAWA", "AKWA IBOM", "ANAMBRA", "BAUCHI", "BAYELSA", "BENUE", "BORNO", "CROSS RIVER", "DELTA", "EBONYI", "EDO", "EKITI", "ENUGU", "FCT", "GOMBE", "IMO", "JIGAWA", "KADUNA", "KANO", "KATSINA", "KEBBI", "KOGI", "KWARA", "LAGOS", "NASARAWA", "NIGER", "OGUN", "ONDO", "OSUN", "OYO", "PLATEAU", "RIVERS", "SOKOTO", "TARABA", "YOBE", "ZAMFARA"];
+			theGroupData = {
+				total: members.length,
+				female: 0,
+				male: 0,
+				youth: 0,
+				old: 0,
+				recent: 0,
+				stateName: null
+			};
+
+
+			var thestates = {}
+			states.forEach((itemST) => {
+				thestates[itemST] = {
+					name: itemST,
+					num: 0
+				}
+				members.forEach((item) => {
+					if (item.stName === itemST) {
+						thestates[itemST].num++
+						return theGroupData.stateName = thestates;
+					}
+				})
+			})
+
+
+			members.forEach((item) => {
+				if (item.gender === 'female') {
+					theGroupData.female++
+				} else if (item.gender === 'male') {
+					theGroupData.male++
+				}
+
+				var dateofBirths = moment(item.dateofBirth, "DD/MM/YYYY").format("DD-MM-YYYY")
+				var todayNow = moment()
+				if (todayNow.diff(dateofBirths, 'years') >= 40) {
+					theGroupData.old++
+				} else if(todayNow.diff(dateofBirths, 'years') <= 40 && todayNow.diff(dateofBirths, 'years') >= 10) {
+					theGroupData.youth++
+				}
+
+				if (moment().diff(item.dateCreated, 'days') <= 2) {
+					theGroupData.recent++
+				}
+			})
+
+			res.render('others/members', {member: theGroupData, json: theUserMe, admin: true});
+		})

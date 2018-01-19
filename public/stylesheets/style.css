@@ -1,0 +1,154 @@
+@import url("https://fonts.googleapis.com/css?family=Archivo+Black|Roboto");
+body {
+  padding: 0px;
+  font-family: 'Roboto', sans-serif; }
+
+a {
+  color: #00B7FF; }
+
+.list-inline-item span {
+  font-size: 25px !important; }
+
+.this-round {
+  border-radius: 12px; }
+
+#navigation {
+  top: 1vh; }
+  @media screen and (min-width: 200px) and (max-width: 700px) {
+    #navigation {
+      width: 80%; } }
+  #navigation a {
+    color: #fff;
+    font-family: 'Archivo Black', sans-serif;
+    font-size: 0.9rem;
+    font-weight: bold; }
+    #navigation a:hover {
+      color: #ccc; }
+
+#adplogo img {
+  box-shadow: 0px 4px 4px 5px rgba(0, 0, 0, 0.2); }
+
+#slogan var {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 1.2rem;
+  color: #fff;
+  text-shadow: 0px 7px 2px rgba(0, 0, 0, 0.3); }
+
+.slogan var {
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.3);
+  font-style: normal;
+  font-family: 'Archivo Black', sans-serif; }
+  .slogan var:nth-of-type(1) {
+    color: #E81919;
+    letter-spacing: 3px;
+    text-shadow: 2px 2px rgba(0, 0, 0, 0.3); }
+  .slogan var:nth-of-type(2) {
+    color: #4BA0FD; }
+  .slogan var:nth-of-type(3) {
+    color: #030D42; }
+
+.slogans {
+  font-size: 20px;
+  line-height: 1.15em;
+  margin-bottom: 20px; }
+
+.about {
+  border-radius: 12px !important; }
+  .about h1 {
+    font-size: 32px;
+    font-family: 'Archivo Black', sans-serif;
+    text-align: center;
+    text-shadow: 5px 5px 1px rgba(204, 204, 204, 0.6); }
+    @media screen and (min-width: 200px) and (max-width: 900px) {
+      .about h1 {
+        font-size: 25px;
+        letter-spacing: 1px; } }
+
+.adminOff {
+  position: relative;
+  margin-top: 70px;
+  margin-bottom: 70px;
+  padding-bottom: 20px;
+  text-align: center;
+  box-shadow: 0px 0px 1px 1px rgba(0, 0, 0, 0.2);
+  border-radius: 12px; }
+
+h2 {
+  font-variant: small-caps;
+  font-size: 32px;
+  font-family: 'Archivo Black', sans-serif;
+  text-align: center;
+  text-shadow: 5px 5px 1px rgba(204, 204, 204, 0.6); }
+  h2 small {
+    font-size: 18px;
+    text-shadow: 0px 0px 0px rgba(204, 204, 204, 0.6); }
+  @media screen and (min-width: 200px) and (max-width: 900px) {
+    h2 {
+      font-size: 25px;
+      letter-spacing: 1px; } }
+
+nav {
+  box-shadow: 0px -5px 5px 0px rgba(0, 0, 0, 0.3);
+  border-radius: 6px !important;
+  height: 100% !important; }
+
+.midTem div p:not(.lead) {
+  font-size: 18px; }
+
+@media screen and (min-width: 200px) and (max-width: 900px) {
+  .midTem {
+    width: 100% !important;
+    padding: 10px !important;
+    margin: 30px !important; }
+    .midTem div, .midTem figure {
+      margin: 0px;
+      padding: 10px !important;
+      width: 100% !important; } }
+
+@media screen and (min-width: 200px) and (max-width: 900px) {
+  .topForm {
+    width: 90% !important;
+    margin: 0 auto !important; }
+    .topForm div {
+      width: 100% !important; } }
+
+footer p {
+  width: 90%;
+  text-align: center;
+  line-height: 26px; }
+  footer p .fa-mobile, footer p .fa-whatsapp, footer p .fa-envelope {
+    font-size: 30px; }
+  @media screen and (min-width: 200px) and (max-width: 900px) {
+    footer p {
+      font-size: 12px; } }
+
+@media screen and (min-width: 200px) and (max-width: 900px) {
+  .fullM {
+    width: 100% !important; } }
+
+.social {
+  margin: 0 auto; }
+  .social .fa {
+    font-size: 27px;
+    color: #fff; }
+    .social .fa-facebook {
+      background-color: #3b5998; }
+    .social .fa-twitter {
+      background-color: #0084b4; }
+    .social .fa-instagram {
+      background-color: #fb3958; }
+    .social .fa-youtube {
+      background-color: #cc181e; }
+    .social .fa-send {
+      background-color: #0088cc; }
+    .social .fa-snapchat {
+      background-color: #fffc00;
+      color: #000; }
+  @media screen and (min-width: 200px) and (max-width: 900px) {
+    .social {
+      width: 100%;
+      border-top: 1px solid #000; }
+      .social span {
+        margin: 0 5px; } }
+
+/*# sourceMappingURL=style.css.map */

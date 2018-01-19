@@ -1,0 +1,49 @@
+<div class="modal fade" id="modal-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+          <span class="sr-only">Close</span>
+        </button>
+        <h4 class="modal-title">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        <p>{{login.phone_number}}</p>
+		  <p>{{message}}</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<input type="hidden" name="status" value="{{status}}" id="status">
+<script type="text/javascript">
+document.onreadystatechange = function () {
+	var Hostadd = window.location.hostname
+	var hostgrab = Hostadd.split('.')
+  if (document.readyState === "interactive") {
+	  var memberstatus = {{login.MemberVerified}}
+    $('#modal-1').modal('show')
+	 setTimeout(function () {
+		 if ($('#status').val() === 'success') {
+			 if (memberstatus === false) {
+			 	window.location.replace('/pay/')
+			} else {
+				if (hostgrab[0] === "www") {
+					window.location.replace('http://dashboard.'+hostgrab[1]+'.'+hostgrab[2]+':5000')
+				} else {
+					window.location.replace('http://dashboard.'+hostgrab[0]+'.'+hostgrab[1]+':5000')
+				}
+			}
+		 } else {
+			 window.location.replace('/register')
+
+		 }
+	 }, 5000);
+  }
+
+}</script>
