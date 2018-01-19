@@ -14,50 +14,37 @@ var Nigeria = mongojs(process.env.DB_URL, ['PollingUnits', 'Senates', 'FederalCo
 
 router.get('/', (req, res) => {
 	var states = ["ABIA", "ADAMAWA", "AKWA IBOM", "ANAMBRA", "BAUCHI", "BAYELSA", "BENUE", "BORNO", "CROSS RIVER", "DELTA", "EBONYI", "EDO", "EKITI", "ENUGU", "FCT", "GOMBE", "IMO", "JIGAWA", "KADUNA", "KANO", "KATSINA", "KEBBI", "KOGI", "KWARA", "LAGOS", "NASARAWA", "NIGER", "OGUN", "ONDO", "OSUN", "OYO", "PLATEAU", "RIVERS", "SOKOTO", "TARABA", "YOBE", "ZAMFARA"];
-
-	Nigeria.PollingUnits.aggregate(
-		{
-			$match: {stName: "SOKOTO"}
-		},
-		{
-
-		$group : { _id : "$lgaName", wdName: { $push: "$wardName" } }
-
-	},
-		function (err, wedontknow) {
-			res.status(200).render('states', {title: 'About the States', wedontknow, states})
-		}
-	)
+	res.status(200).render('states', {title: 'About the States', location: states})
 
 });
 
 
 
-//
-// router.get('/:states', (req, res) => {
-// 	console.log(req.params);
-// 	var listOfthing = {
-// 		active: false
-// 	}
-// 	fetch(process.env.ADDR+'/contact/'+req.params.states)
-// 	.then((res) => {
-// 		return res.json();
-// 	}).then((json) => {
-// 		listOfthing.contact = json
-// 		listOfthing.active = true
-// 	})
-// 	fetch(process.env.ADDR+'/excos/'+req.params.states)
-// 	.then((res) => {
-// 		return res.json();
-// 	}).then((json) => {
-// 		listOfthing.excos = json
-// 		listOfthing.active = true
-// 	})
-//
-// 	if (listOfthing.active === true) {
-// 		res.status(200).render('states', {title: 'About '+req.params.states, data: listOfthing});
-// 	}
-// });
+
+router.get('/:states', (req, res) => {
+
+	var listOfthing = {
+		active: false
+	}
+	fetch(process.env.ADDR+'/contact/'+req.params.states)
+	.then((res) => {
+		return res.json();
+	}).then((json) => {
+		listOfthing.contact = json
+		listOfthing.active = true
+	})
+	fetch(process.env.ADDR+'/excos/'+req.params.states)
+	.then((res) => {
+		return res.json();
+	}).then((json) => {
+		listOfthing.excos = json
+		listOfthing.active = true
+	})
+
+	if (listOfthing.active === true) {
+		res.status(200).render('states', {title: 'About '+req.params.states, data: listOfthing});
+	}
+});
 //
 // router.get('/:states/:lga', (req, res) => {
 // 	var listOfthing = {
