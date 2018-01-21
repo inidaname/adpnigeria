@@ -6,7 +6,7 @@ $(document).ready(function() {
 			$(this).addClass('is-loading')
 			document.getElementById('showCon').className = ""
 			$.ajax({
-				url: 'http://192.168.8.101:8888/api/memberphone/'+$('#pronat').val(),
+				url: 'http://192.168.0.100:8888/api/memberphone/'+$('#pronat').val(),
 				type: 'GET',
 				dataType: 'JSON'
 			})
@@ -46,7 +46,7 @@ $(document).ready(function() {
 			})
 
          //
-			// $.getJSON('http://192.168.8.101:8888/api/memberphone/'+$('#pronat').val(), function(json, textStatus) {
+			// $.getJSON('http://192.168.0.100:8888/api/memberphone/'+$('#pronat').val(), function(json, textStatus) {
 			// 	if (text) {
          //
 			// 	}

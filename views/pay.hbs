@@ -101,7 +101,7 @@
 
 								$.post('paid', response, function(data, textStatus, xhr) {
 									$.ajax({
-										url: 'http://192.168.8.101:8888/api/member/'+response.userId,
+										url: 'http://192.168.0.100:8888/api/member/'+response.userId,
 										type: 'PATCH',
 										data: {MemberVerified: true}
 									})
@@ -116,7 +116,7 @@
 								});
 
                         //
-								// $.patch('http://192.168.8.101:8888/api/member/'+response.userId, {MemberAuth: true}, function(data, textStatus, xhr) {
+								// $.patch('http://192.168.0.100:8888/api/member/'+response.userId, {MemberAuth: true}, function(data, textStatus, xhr) {
 								// 	if (hostgrab[0] === "www") {
 								// 		window.location.replace('http://dashboard.'+hostgrab[1]+'.'+hostgrab[2]+':5000')
 								// 	} else {

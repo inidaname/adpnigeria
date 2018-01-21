@@ -6,9 +6,30 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
 const mongojs = require('mongojs');
 const moment = require('moment');
+const hbs = require('nodemailer-express-handlebars');
+const nodemailer = require('nodemailer');
 const request = require('request');
 
 var Nigeria = mongojs(process.env.DB_URL, ['PollingUnits', 'Senates', 'FederalConstituency']);
+
+//nodemailer settings
+//This options sends mail
+let transporter = nodemailer.createTransport({
+	host: process.env.MAILHOST,
+	port: process.env.MAILPORT,
+	secure: false, // true for 465, false for other ports
+	auth: {
+		user: process.env.MAILUSER,
+		pass: process.env.MAILPASS
+	}
+});
+
+//useing engine for mail view
+transporter.use('compile', hbs({
+	viewPath: 'views/email',
+	extName: '.hbs'
+}));
+
 
 
 router.use(cookieParser());
@@ -82,13 +103,18 @@ router.get('/getWARD', function (req, res) {
 	}
 
 
-	Nigeria.PollingUnits.find({
-			 stName: req.query.stateReg,
-			 lgaName: req.query.lgaReg
+	Nigeria.PollingUnits.aggregate(
+		{
+			 $match : {
+				 stName: req.query.stateReg,
+				 lgaName: req.query.lgaReg
+			 }
 		},
 		{
-			wardName: 1,
-	}).sort({lgaName: 1}, function (err, docs) {
+			 $group : {
+					_id : "$wardName"
+			 }
+		}).sort({wardName: 1}, function (err, docs) {
 		res.send({docs: docs, fedConst: FedConstituency, Senatorial: Senatorial});
 	})
 });
@@ -96,14 +122,19 @@ router.get('/getWARD', function (req, res) {
 
 //route to get the wards
 router.get('/getWARDout', function (req, res) {
-	Nigeria.PollingUnits.find({
-			 stName: req.query.stateReg,
-			 lgaName: req.query.lgaReg
+	Nigeria.PollingUnits.aggregate(
+		{
+			 $match : {
+				 stName: req.query.stateReg,
+				 lgaName: req.query.lgaReg
+			 }
 		},
 		{
-			wardName: 1,
-	}).sort({lgaName: 1}, function (err, docs) {
-		res.send({docs: docs});
+			 $group : {
+					_id : "$wardName"
+			 }
+		}, function (err, docs) {
+		res.send(docs);
 	})
 });
 
@@ -136,14 +167,19 @@ router.get('/senates', (req, res) => {
 
 //get the polling units
 router.get('/getPolling', function (req, res) {
-	Nigeria.PollingUnits.find({
-			 stName: req.query.stateName,
-			 lgaName: req.query.localgovtName,
-			 wardName: req.query.wardName
-		},
+	Nigeria.PollingUnits.aggregate(
 		{
-			psName: 1,
-	}).sort({lgaName: 1}, function (err, docs) {
+			$match : {
+		 		stName: req.query.stateName,
+				lgaName: req.query.localgovtName,
+				 wardName: req.query.wardName
+			 }
+		 },
+		 {
+ 			 $group : {
+ 					_id : "$psName"
+ 			 }
+ 		}).sort({psName: 1}, function (err, docs) {
 		res.send(docs);
 	})
 });
@@ -195,11 +231,11 @@ router.post('createExco', isAuthenticated, (req, res) => {
 //getting the lga for confirmation display
 router.get('/getLGA', function (req, res) {
 
-	Nigeria.PollingUnits.find({
-			 stName: req.query.statePlace
+	Nigeria.PollingUnits.aggregate({
+			$match: {stName: req.query.statePlace}
 		},
 		{
-			lgaName: 1,
+			$group: { _id: '$lgaName'}
 	}).sort({lgaName: 1}, function (err, docs) {
 
 		res.send(docs);
@@ -211,12 +247,34 @@ router.post('/', (req, res) => {
 
 	// console.log(body);
 	request.post(
-		 process.env.ADDR+'/register',
+		 process.env.ADDR+'/registernm',
 		 { json: body},
 		 function (error, response, body) {
 			  if (!error) {
-				  res.status(200).send({success: true});
+				  transporter.sendMail({
+					  from: 'contact@adp.ng', // sender address
+					  to: response.email, // list of receivers
+					  subject: response.full_name + ' Please Activate Your Membership', // Subject line
+					  template: 'emailtempl', // email template
+					  context: {
+						  full_name: response.full_name,
+					  }
+				  }, function (err, info) {
+					  if (!err) {
+						  console.log('Message sent: %s', info.messageId);
+				        // Preview only available when sending through an Ethereal account
+				        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+
+				        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
+				        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+						    request.post('/login/', {phone_number: response.phone_number})
+					  } else {
+						  request.post('/login/', {phone_number: response.phone_number})
+					  }
+				  });
 			  } else {
+				  res.redirect(400, '//');
 			  	res.status(404).send({success: false});
 			  }
 		 }

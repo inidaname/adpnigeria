@@ -121,7 +121,7 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 							return theUserMe = item;
 						}
 					})
-					theUserMe.adminid = json._id
+					theUserMe.adminid = req.cookies.admin_id
 					res.render('others/members', {member: theGroupData, json: theUserMe, admin: true});
 				})
 		} else if (req.cookies.admin_req) {
@@ -505,8 +505,30 @@ router.post('/:subdomain', isAuthenticated, (req, res) => {
 
 router.get('/:subdomain/platform', isAuthenticated, (req, res) => {
 	if (req.params.subdomain === 'dashboard') {
-		res.render('others/platform');
+		fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+		.then((res) => {
+			return res.json();
+		}).then((json) => {
+			res.render('others/platform', {title: 'Plstform', json});
+		})
 	}
+});
+
+router.post('/:subdomain/platform', (req, res) => {
+  if (req.params.subdomain === 'dashboard') {
+	  var body = req.body
+	  body.contestant = req.cookies.user_id
+	  request.post(
+		  process.env.ADDR+'/interest/',
+		  {json: body},
+		  function (err, response, body) {
+			  if (!err) {
+			  	// FIXME: To send email after return
+			  	res.redirect('/pay/');
+			  }
+		  }
+	  )
+  }
 });
 
 router.get('/:subdomain/profile', (req, res) => {

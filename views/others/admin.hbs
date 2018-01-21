@@ -62,24 +62,19 @@ var ThisMember = {
 
 		emptyLGAPPL = []
 		$.getJSON('http://lvh.me:5000/register/getLGA', {statePlace: getThePlace}, function(json, textStatus) {
-			json.forEach(elemST => {
-				if ($.inArray(elemST.lgaName, emptyLGAPPL) === -1) {
-					emptyLGAPPL.push(elemST.lgaName)
-				}
-			});
-
 			var theOBJ = []
 
-			emptyLGAPPL.forEach((item) => {
-				theOBJ.push(item)
-				theOBJ[item] = {
-					name: item,
+			json.forEach((item) => {
+				console.log(item._id);
+				theOBJ.push(item._id)
+				theOBJ[item._id] = {
+					name: item._id,
 					count: 0
 				}
 				theLGAs.forEach((theLGA) => {
 					if (getThePlace === theLGA.stName) {
-						if (theLGA.lgaName === item) {
-							theOBJ[item].count++
+						if (theLGA.lgaName === item._id) {
+							theOBJ[item._id].count++
 							return theOBJ;
 						}
 					}
@@ -190,33 +185,23 @@ var ThisMember = {
 
 		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getTheLGA+'</a></li>')
 
-		var emptyWARDPPL = []
+
 		$.getJSON('http://lvh.me:5000/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
 
-			var wardsBro = jsonW.docs
-			emptyWARDPPL = []
-
-
-			wardsBro.forEach(elemST => {
-				if ($.inArray(elemST.wardName, emptyWARDPPL) === -1) {
-					emptyWARDPPL.push(elemST.wardName)
-				}
-			});
-
-
+			console.log(jsonW);
 			var theOBJ = []
 
-			emptyWARDPPL.forEach((item) => {
-				theOBJ.push(item)
-				theOBJ[item] = {
-					name: item,
+			jsonW.forEach((item) => {
+				theOBJ.push(item._id)
+				theOBJ[item._id] = {
+					name: item._id,
 					count: 0
 				}
 				theLGAs.forEach((theLGA) => {
 					if (getThePlace === theLGA.stName) {
 						if (theLGA.lgaName === getTheLGA) {
-							if (theLGA.wardName === item) {
-								theOBJ[item].count++
+							if (theLGA.wardName === item._id) {
+								theOBJ[item._id].count++
 								return theOBJ;
 							}
 						}
@@ -225,7 +210,7 @@ var ThisMember = {
 			})
 
 			theOBJ.forEach((tellMe) => {
-				$('#populate').append(`<div class='column is-one-third' onclick='getThePoll("`+theOBJ[tellMe].name+`", "`+getTheLGA+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Ward: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
+				$('#populate').append(`<div class='column is-one-third' onclick=getThePoll("`+theOBJ[tellMe].name+`", "`+getTheLGA+`", "`+getThePlace+`")> <div class='box'> <p class='is-size-6'>Name of Ward: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
 			})
 		});
 		var theLGAs = ThisMember.come;
@@ -250,9 +235,9 @@ var ThisMember = {
 			var theOBJ = []
 
 			PollingPoll.forEach((item) => {
-				theOBJ.push(item.psName)
-				theOBJ[item.psName] = {
-					name: item.psName,
+				theOBJ.push(item._id)
+				theOBJ[item._id] = {
+					name: item._id,
 					count: 0,
 					people: []
 				}
@@ -260,9 +245,9 @@ var ThisMember = {
 					if (getThePlace === theLGA.stName) {
 						if (theLGA.lgaName === getTheLGA) {
 							if (theLGA.wardName === getThePoll) {
-								if (theLGA.pollingUnit === item.psName) {
-									theOBJ[item.psName].count++
-									theOBJ[item.psName].people.push(theLGA)
+								if (theLGA.pollingUnit === item._id) {
+									theOBJ[item._id].count++
+									theOBJ[item._id].people.push(theLGA)
 									return theOBJ;
 								}
 							}

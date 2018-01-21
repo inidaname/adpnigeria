@@ -1,6 +1,6 @@
-<div class="tile is-ancestor">
+<div class="tile is-ancestor box">
 	<div class="tile is-parent">
-     <div class="tile is-child box is-flex-desktop theMargin">
+     <div class="tile is-child box theMargin">
 		  <div class="card">
 		    <div class="card-content">
 		      <div class="media">
@@ -67,6 +67,7 @@
 				 if (document.readyState === "complete") {
 					 $('#displayDon').click(function(event) {
 					 	$('#donate').slideToggle('slow')
+						$('#donate').toggleClass('notification is-success')
 					 });
 				 }
 			 }
@@ -113,8 +114,40 @@
 		 </form>
     </div>
     <div class="tile is-child box">
-      <p class="title">Two</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+      <p class="title">Message Your Party</p>
+		<form id="complain" method="post">
+			<div class="field">
+			  <label class="label">Full Name</label>
+			  <div class="control">
+			    <input class="input" type="text" name="name" value="{{json.full_name}}" disabled placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Subject</label>
+			  <div class="control">
+			    <input class="input" type="text" name="subject" placeholder="Text input">
+			  </div>
+		  </div>
+		  <div class="field">
+		    <label class="label">Category</label>
+		    <div class="control">
+		      <div class="select">
+		        <select name="tags">
+		          <option value="">Select Category</option>
+		          <option value="Suggestion">Suggestion</option>
+		          <option value="Complain">Complain</option>
+		        </select>
+		      </div>
+		    </div>
+		  </div>
+		  <div class="field">
+		    <label class="label">Message</label>
+		    <div class="control">
+				 <textarea name="message" class="textarea" rows="8" cols="80"></textarea>
+		    </div>
+		  </div>
+		  <button type="button" class="button is-info" name="button">Send</button>
+		</form>
     </div>
   </div>
 </div>

@@ -6,7 +6,7 @@ $(document).ready(function() {
     // replace 'demo' with your cloud name in the line above
     cl.responsive();
 
-	 // $.post('http://192.168.8.101:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
+	 // $.post('http://192.168.0.100:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
 		//  console.log(data);
 	 // });
 
@@ -62,14 +62,8 @@ $(document).ready(function() {
 						data: {statePlace: stateReg.val()}
 					})
 					.done(function(data) {
-						data.forEach(elemST => {
-							if ($.inArray(elemST.lgaName, emptyLGA) === -1) {
-								emptyLGA.push(elemST.lgaName)
-							}
-						});
-
-						emptyLGA.forEach(elemLGA => {
-							$('#localgovt').append('<option value="'+elemLGA+'">'+elemLGA+'</option>')
+						data.forEach(elemLGA => {
+							$('#localgovt').append('<option value="'+elemLGA._id+'">'+elemLGA._id+'</option>')
 						});
 					})
 					.fail(function() {
@@ -99,13 +93,8 @@ $(document).ready(function() {
 							$('#FedConPat').html(data.fedConst)
 							$('#FedSp').val(data.fedConst)
 							var thisData = data.docs
-							thisData.forEach(elemDT => {
-								if ($.inArray(elemDT.wardName, emptyWard) === -1) {
-									emptyWard.push(elemDT.wardName)
-								}
-							});
-							emptyWard.forEach(elemWard => {
-								wardCT.append('<option value="'+elemWard+'">'+elemWard+'</option>');
+							thisData.forEach(elemWard => {
+								wardCT.append('<option value="'+elemWard._id+'">'+elemWard._id+'</option>');
 							});
 						})
 						.fail(function() {
@@ -127,7 +116,7 @@ $(document).ready(function() {
 							pollingUnit.html('<option value="">Please select your polling unit</option>')
 							data.forEach(elemPU => {
 								$('#loading').modal('hide')
-								pollingUnit.append('<option value="'+elemPU.psName+'">'+elemPU.psName+'</option>')
+								pollingUnit.append('<option value="'+elemPU._id+'">'+elemPU._id+'</option>')
 							});
 						})
 						.fail(function() {
@@ -240,7 +229,7 @@ $(document).ready(function() {
 						$('#phone_number').parent().removeClass('is-Invalid')
 
 						//checking if user phone number already exist
-						$.getJSON('http://192.168.8.101:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
+						$.getJSON('http://192.168.0.100:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
 							if (json.success === true) {
 								$('#phoneError').html('already exist. <code>E66.3</code>')
 								$('#phone_number').addClass('is-invalid')

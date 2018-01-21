@@ -15,6 +15,7 @@ const favicon = require('serve-favicon');
 const sassMiddleware = require('node-sass-middleware');
 const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
+const expressSanitizer = require('express-sanitizer');
 var db = require('./db');
 
 // const bootstrap = require('bootstrap');
@@ -64,6 +65,7 @@ app.use(logger('dev'));
 app.use(compression());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
+app.use(expressSanitizer());
 app.use(cookieParser());
 
 app.use(sassMiddleware({

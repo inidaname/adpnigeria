@@ -34,12 +34,27 @@
 			 </div>
 	   </div>
 	   <div class="box">
-			<div class="control">
-			  <div class="select">
-				 <select name="level" id="levelReg">
-					<option value="">Select Level</option>
-					{{#each admin}}<option value="{{this}}">{{this}} Level</option> {{/each}}
-				 </select>
+			<div class="field">
+				<div class="control">
+					<div class="select">
+						<select name="level" id="levelReg">
+							<option value="">Select Level</option>
+							{{#each admin}}<option value="{{this}}">{{this}} Level</option> {{/each}}
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="field">
+			  <label class="label">Label</label>
+			  <div class="control">
+				  <div class="select">
+					  <select name="level" id="levelReg">
+						  <option value="">Select Level</option>
+						  <option value="BoT">Board of Trustee</option>
+						  <option value="NEC">Excutive Council</option>
+						  <option value="Chairman">Chairman</option>
+					  </select>
+				  </div>
 			  </div>
 			</div>
 			<div class="field">
@@ -188,7 +203,7 @@
 				  var theevent = event.path[2]
 
 				  $.ajax({
-					  url: 'http://192.168.8.101:8888/api/admin/'+theId,
+					  url: 'http://192.168.0.100:8888/api/admin/'+theId,
 					  type: 'PATCH',
 					  data: {approve: true}
 				  })
@@ -222,7 +237,7 @@
 			  var JustDecline = () => {
 				  // console.log(event.path[2].style.display = 'none');
 				  $.ajax({
-					  url: 'http://192.168.8.101:8888/api/admin/'+theIdD,
+					  url: 'http://192.168.0.100:8888/api/admin/'+theIdD,
 					  type: 'DELETE',
 				  })
 				  .done(function(data) {

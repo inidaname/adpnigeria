@@ -1,0 +1,298 @@
+<div class="tile is-ancestor">
+  <div class="tile is-7 is-vertical is-parent">
+    <div class="tile is-child box">
+      <p class="title">Contest for a Position</p>
+		<small>This is an Express of Interest form, Nomination will be handle by Party Members</small>
+		<div class="box has-text-centered" id="applyBTN">
+			<button type="button" id="partyExcos" class="button is-info">Party Exco</button> <button type="button" id="publicOff" class="button is-danger">Public Office</button>
+		</div>
+		<script type="text/javascript">
+		document.onreadystatechange = function() {
+ 	  	if (document.readyState === "complete") {
+			$('#partyExcos').click(function(event) {
+				$('#ExcoexpressOfIn').show('slow');
+				$('#applyBTN').hide('slow');
+			});
+			$('#publicOff').click(function(event) {
+				$('#PubexpressOfIn').show('slow');
+				$('#applyBTN').hide('slow');
+			});
+			$('#clearthis1').click(function(event) {
+				$('#PubexpressOfIn').hide('slow');
+				$('#applyBTN').show('slow');
+			});
+			$('#clearthis2').click(function(event) {
+				$('#ExcoexpressOfIn').hide('slow');
+				$('#applyBTN').show('slow');
+			});
+ 	  	}
+ 	  }
+		</script>
+
+		<!-- expression of interest for public office -->
+		<form id="PubexpressOfIn" style="display: none; margin-top:20px;" class="box" action="" method="post">
+			<div class="content has-text-centered">
+				<h5 class="has-text-centered">Expression of Interest for Public Office</h5>
+				<button type="button" class="button is-dark" id="clearthis1">Go Back</button>
+			</div>
+			<div class="field">
+			  <label class="label">Position Contesting For</label>
+			  <div class="control">
+			    <div class="select is-success is-fullwidth">
+			      <select required name="position">
+			        <option value="">Select One Please</option>
+			        <option value="Councilorship">Councilorship</option>
+			        <option value="Council Chairman">Council Chirman</option>
+			        <option value="State Assembly">State Assembly</option>
+			        <option value="Federal House Assembly">Federal House Assembly</option>
+			        <option value="Senator">Senator</option>
+			        <option value="Governorship">Governorship</option>
+			        <option value="Presidency">Presidency</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Poster Picture <small>You Can always Change</small></label>
+			  <div class="control">
+				  <input type="file" name="posterPic" class="input" value="">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Full Name</label>
+			  <div class="control">
+			    <input class="input" type="text" name="full_name" value="{{json.full_name}}" placeholder="Your Full Name">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Voter's Card Number</label><small>This is issued by INEC</small>
+			  <div class="control">
+			    <input class="input" name="voterCard" type="text" required value="{{json.voterCard}}" placeholder="Voter Card Number">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Marital Status</label>
+			  <div class="control">
+			    <div class="select">
+			      <select name="maritalStatus">
+			        <option value="">Please Select One</option>
+			        <option value="Single">Single</option>
+			        <option value="Married">Married</option>
+			        <option value="Divorced">Divorced</option>
+			        <option value="Widow">Widow</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
+
+			<div class="field">
+				<label class="label">Do You Have Children</label>
+			  <div class="control">
+			    <label class="radio">
+			      <input type="radio" name="WithKids" required value="Yes">
+			      Yes
+			    </label>
+			    <label class="radio">
+			      <input type="radio" name="WithKids" value="No">
+			      No
+			    </label>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Address</label>
+			  <div class="control">
+				  <textarea name="address" required class="textarea" rows="3" cols="20">{{json.residenceAdd}}</textarea>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Highest Level of Education</label>
+			  <div class="control">
+			    <div class="select">
+			      <select required name="eduLevel" id="eduLevel">
+						<option value="">Please Select One Below</option>
+						<option value="Secondary School">Secondary School</option>
+						<option value="NCE Level">NCE Level</option>
+						<option value="ND Level">ND Level</option>
+						<option value="HND Level">HND Level</option>
+						<option value="Bachelor Degree">Bachelor Degree</option>
+						<option value="Masters Degree">Masters Degree</option>
+						<option value="PhD">PhD</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of Secondary School</label>
+			  <div class="control">
+			    <input class="input" type="text" name="secondarySch" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of High Institution (If Applicable)</label>
+			  <div class="control">
+			    <input class="input" type="text" name="highInstitute" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of Second High Institution (If Applicable)</label>
+			  <div class="control">
+			    <input class="input" type="text" name="SechighInstitute" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Place of Work</label>
+			  <div class="control">
+			    <input class="input" type="text" name="placeofwork" placeholder="Place of Work">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Position at Working Place</label>
+			  <div class="control">
+				  <input class="input" type="text" name="positionofwork" placeholder="Place of Work">
+			  </div>
+			</div>
+			<input type="hidden" name="category" value="Public Office">
+			<button type="button" class="button is-info is-large">Submit</button>
+		</form>
+
+		<!-- expression of exco interest here -->
+		<form id="ExcoexpressOfIn" style="display: none; margin-top:20px;" class="box" action="" method="post">
+			<div class="content has-text-centered">
+				<h5 class="has-text-centered">Expression of Interest form for Party Excutives</h5>
+				<button type="button" class="button is-dark" id="clearthis2">Go Back</button>
+			</div>
+			<div class="field">
+			  <label class="label">Level of Position</label>
+			  <div class="select is-success is-fullwidth">
+				 <select required name="level">
+					<option value="">Select One Please</option>
+					<option value="Polling Unit">Polling Unit</option>
+					<option value="Ward">Ward</option>
+					<option value="Local Govt">Local Govt</option>
+					<option value="State">State</option>
+					<option value="National">National</option>
+				 </select>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Position Contesting For</label>
+			  <div class="control">
+				 <input type="text" name="position" required class="input" value="">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Poster Picture <small>You Can always Change</small></label>
+			  <div class="control">
+				  <input type="file" name="posterPic" class="input" value="">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Full Name</label>
+			  <div class="control">
+			    <input class="input" type="text" name="full_name" value="{{json.full_name}}" placeholder="Your Full Name">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Voter's Card Number</label><small>This is issued by INEC</small>
+			  <div class="control">
+			    <input class="input" name="voterCard" type="text" required value="{{json.voterCard}}" placeholder="Voter Card Number">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Marital Status</label>
+			  <div class="control">
+			    <div class="select">
+			      <select name="maritalStatus">
+			        <option value="">Please Select One</option>
+			        <option value="Single">Single</option>
+			        <option value="Married">Married</option>
+			        <option value="Divorced">Divorced</option>
+			        <option value="Widow">Widow</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
+
+			<div class="field">
+				<label class="label">Do You Have Children</label>
+			  <div class="control">
+			    <label class="radio">
+			      <input type="radio" name="WithKids" required value="Yes">
+			      Yes
+			    </label>
+			    <label class="radio">
+			      <input type="radio" name="WithKids" value="No">
+			      No
+			    </label>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Address</label>
+			  <div class="control">
+				  <textarea name="address" required class="textarea" rows="3" cols="20">{{json.residenceAdd}}</textarea>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Highest Level of Education</label>
+			  <div class="control">
+			    <div class="select">
+			      <select required name="eduLevel" id="eduLevel">
+						<option value="">Please Select One Below</option>
+						<option value="Secondary School">Secondary School</option>
+						<option value="NCE Level">NCE Level</option>
+						<option value="ND Level">ND Level</option>
+						<option value="HND Level">HND Level</option>
+						<option value="Bachelor Degree">Bachelor Degree</option>
+						<option value="Masters Degree">Masters Degree</option>
+						<option value="PhD">PhD</option>
+			      </select>
+			    </div>
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of Secondary School</label>
+			  <div class="control">
+			    <input class="input" type="text" name="secondarySch" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of High Institution (If Applicable)</label>
+			  <div class="control">
+			    <input class="input" type="text" name="highInstitute" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Name of Second High Institution (If Applicable)</label>
+			  <div class="control">
+			    <input class="input" type="text" name="SechighInstitute" placeholder="Text input">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Place of Work</label>
+			  <div class="control">
+			    <input class="input" type="text" name="placeofwork" placeholder="Place of Work">
+			  </div>
+			</div>
+			<div class="field">
+			  <label class="label">Position at Working Place</label>
+			  <div class="control">
+				  <input class="input" type="text" name="positionofwork" placeholder="Place of Work">
+			  </div>
+			</div>
+			<input type="hidden" name="category" value="Party Exco">
+			<button type="submit" class="button is-info is-large">Submit</button>
+		</form>
+    </div>
+    <div class="tile is-child box">
+      <p class="title">Two</p>
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
+    </div>
+  </div>
+  <!-- <div class="tile is-parent">
+    <div class="tile is-child box">
+		 <div class="content">
+		  <p class="title">This Section will Display list of Available Contestant during a Convention or a Primary Election<p>
+		 </div>
+    </div>
+  </div> -->
+</div>

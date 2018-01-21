@@ -3,15 +3,28 @@
 	  <div class="d-flex flex-column w-100 border border-2 text-center this-round">
 	  	<h2 class="mt-5 mb-2">Contact Details </h2>
 		<img data-src="http://res.cloudinary.com/inidaname/image/upload/w_auto,c_scale/v1514741806/IMG_20171219_170606_yykfmq.jpg" class="d-block w-75 mr-auto ml-auto mt-3 mb-3 border border-2 border-dark cld-responsive" alt="Office Picture">
-		<address class="lead">
+		{{#if contact.address}}
+		<address id="thisAddress" class="lead">
 			<hr class="w-75 mr-auto ml-auto mt-4">
-		  Plot 3379A, No. 20 Mungo Park Close, <br>Off Jesse Jackson/Gimbya Street <br>Asokoro/Area 11. <br>Abuja. Nigeria
+
+		  {{contact.address}}
 		</address>
-		  <p>
-			 <i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 000 0536</strong> &nbsp; &nbsp;
-			 <i class="fa fa-whatsapp" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 182 5005</strong><br><br>
-			 <i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">contact@adp.ng</strong>
+		  <p id="thisContact">
+			 <i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">{{contact.officeNo}}</strong> &nbsp; &nbsp;
+			 <i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">{{contact.officeEmail}}</strong>
 		  </p>
+		  {{else}}
+		  <small>Address has not been provided yet please contact the National Secretariat for more info</small>
+		  <address id="thisAddress" class="lead">
+  			<hr class="w-75 mr-auto ml-auto mt-4">
+  		  Plot 3379A, No. 20 Mungo Park Close, <br>Off Jesse Jackson/Gimbya Street <br>Asokoro/Area 11. <br>Abuja. Nigeria
+  		</address>
+  		  <p id="thisContact">
+  			 <i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 000 0536</strong> &nbsp; &nbsp;
+  			 <i class="fa fa-whatsapp" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 182 5005</strong><br><br>
+  			 <i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">contact@adp.ng</strong>
+  		  </p>
+		  {{/if}}
 		  <ul class="d-flex flex-row justify-content-between list-inline w-75 mt-2 mb-2 mr-auto ml-auto">
 			  <li class="list-inline-item">
 				  <a href="https://twitter.com/adpng" target="_blank">
@@ -56,24 +69,63 @@
 		  </ul>
 	  </div>
 	  <div class="d-flex flex-column w-100 mt-5">
-		  <h2 class="text-center mt-4 mb-1">State Office Addresses</h2>
+		  <h2 class="text-center mt-4 mb-1">Secretariat Addresses</h2>
 		  <small class="text-center mb-4">Click on the links below for addresses and information</small>
+		  {{#if state}}
 		  <div class="row">
 			  {{#each location}}
 			  <div class="col-sm-6 mb-4">
 			    <div class="card">
 			      <div class="card-body">
-			        <h5 class="card-title">{{this}} Address</h5>
-			        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-			        <a href="{{this}}/" class="btn btn-primary">Click Here</a>
+			        <h5 class="card-title">{{this._id}} Address</h5>
+			        <p class="card-text">Click Below to see addresses of ADP Branches</p>
+			        <a href="{{this._id}}/" class="btn btn-primary">Click Here</a>
 			      </div>
 			    </div>
 			  </div>
 			  {{/each}}
 		  </div>
+			  {{else}}
+		  <div class="row" id="listWards">
+			  {{#each location}}
+			  <div class="col-sm-6 mb-4">
+				  <div class="card">
+					  <div class="card-body">
+						  <h5 class="card-title">{{this._id}} Address</h5>
+						  <p class="card-text">Click Below to see addresses of ADP Branches</p>
+						  <button onclick='getThere("{{this._id}}")' class="btn btn-primary">Click Here</button>
+
+					  </div>
+				  </div>
+			  </div>
+			  {{/each}}
+	  </div>
+		  {{/if}}
 	  </div>
   </div>
 </div>
+<script type="text/javascript">
+
+document.onreadystatechange = function () {
+	if (document.readyState === "complete") {
+	}
+}
+var getThere = function (arguments) {
+	$.getJSON('lga', {param: arguments}, function(json, textStatus) {
+		if (json.contact !== null) {
+			var theContact = json.contact
+			$('#thisAddress').html(theContact.address)
+			$('#thisContact').html('<i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeNo+'</strong> &nbsp; &nbsp;<i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeEmail+'</strong>')
+		}
+		var places = json.docs
+		$('#listWards').html(' ')
+		places.forEach((item) => {
+			$('#listWards').append('<div class="col-sm-6 mb-4"><div class="card"><div class="card-body"><h5 class="card-title">'+item._id+' Ward</h5><p class="card-text"></p></div></div></div>')
+		})
+	});
+}
+
+</script>
 <!-- <script type="text/javascript">
 document.onreadystatechange = function() {
 	if (document.readyState === "complete") {
