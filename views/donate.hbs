@@ -81,6 +81,12 @@
 								}]
 							},
 							callback: function(response) {
+                $.ajaxSetup({
+                  headers : {
+                    authorization: "{{header}}"
+                  }
+                });
+
 								response.full_name = document.getElementById('full_name').value
 								response.phone_number = document.getElementById('phone_number').value
 								response.email = document.getElementById('email').value

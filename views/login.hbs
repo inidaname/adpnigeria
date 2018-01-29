@@ -20,6 +20,35 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+
+<div class="d-flex flex-column w-50 fullM mr-auto ml-auto p-4 mt-4 mb-4">
+  <div id="accordion" aria-expanded="false" role="tablist">
+    <div class="card">
+      <div class="card-header" role="tab" id="headingOne">
+      <h5 data-toggle="collapse" href="#collapseOne" role="button" aria-expanded="true" aria-controls="collapseOne">Already Registered <small>Please clickhere</small></h5>
+      </div>
+     <div id="collapseOne" class="collapse hide" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
+        <div class="card-body">
+        <form id="getLogin" action="/login" method="post">
+          <p>If this is your first time here please scroll down and fill the form below thank you</p>
+          <div class="form-group">
+            <label for="loginName">Full Name</label>
+            <input type="text" name="full_name" class="form-control" id="loginName" placeholder="">
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Phone</label>
+            <input type="text" id="loginPassword" name="phone_number" class="form-control" placeholder="Phone Number">
+            <p class="help-block" id="logErr">Use Your Phone Number</p>
+          </div>
+          <button type="submit" id="loginBTN" class="btn btn-primary btn-lg">Log In</button>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <input type="hidden" name="status" value="{{status}}" id="status">
 <script type="text/javascript">
 document.onreadystatechange = function () {
@@ -40,7 +69,7 @@ document.onreadystatechange = function () {
 				}
 			}
 		 } else {
-			 window.location.replace('/register')
+			 window.location.replace('/register/')
 
 		 }
 	 }, 5000);

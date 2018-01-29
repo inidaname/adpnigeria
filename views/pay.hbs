@@ -99,6 +99,12 @@
 								response.status = "Success"
 								response.userId = getCookie('user_id')
 
+                $.ajaxSetup({
+                  headers : {
+                    authorization: "{{header}}"
+                  }
+                });
+
 								$.post('paid', response, function(data, textStatus, xhr) {
 									$.ajax({
 										url: 'http://192.168.0.100:8888/api/member/'+response.userId,
@@ -115,15 +121,6 @@
 									})
 								});
 
-                        //
-								// $.patch('http://192.168.0.100:8888/api/member/'+response.userId, {MemberAuth: true}, function(data, textStatus, xhr) {
-								// 	if (hostgrab[0] === "www") {
-								// 		window.location.replace('http://dashboard.'+hostgrab[1]+'.'+hostgrab[2]+':5000')
-								// 	} else {
-								// 		window.location.replace('http://dashboard.'+hostgrab[0]+'.'+hostgrab[1]+':5000')
-								// 	}
-                        //
-								// });
 							}, 15000);
 						},
 						onClose: function(jsk) {

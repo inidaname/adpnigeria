@@ -6,21 +6,24 @@
 		      <div class="media">
 		        <div class="media-left">
 		          <figure class="image is-48x48">
-		            <img src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
+		            <img src="{{json.passport}}" width="96px" height="96px" alt="Placeholder image">
 		          </figure>
 		        </div>
 		        <div class="media-content">
-		          <p class="title is-4">John Smith</p>
-		          <p class="subtitle is-6">@johnsmith</p>
+		          <p class="title is-4">{{json.full_name}}</p>
+		          <p class="subtitle is-6">Position: {{json.adminLevel}}</p>
+		          <p class="subtitle is-6">PVC Number: <input type="text" id="pvc_confirm" readonly name="pvc" value="{{json.pvc}}" placeholder="Please instert your PVC Number"></p>
+							<p id="pvc_error">&nbsp;</p>
+							<div class="content">
+							 <p class="title is-5 has-text-centered">Share the Message with Friends and Family<p>
+								<p id="shareRound" class="has-text-centered"></p>
+							</div>
+							<div id="clImage"></div>
 		        </div>
 		      </div>
 
 		      <div class="content">
-		        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-		        Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-		        <a href="#">#css</a> <a href="#">#responsive</a>
-		        <br>
-		        <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+						<img src="" alt="">
 		      </div>
 		    </div>
 		  </div>
@@ -65,6 +68,12 @@
 			 <script type="text/javascript">
 			 document.onreadystatechange = function() {
 				 if (document.readyState === "complete") {
+					 $.ajaxSetup({
+						 headers : {
+							 authorization: "{{header}}"
+						 }
+					 });
+
 					 $('#displayDon').click(function(event) {
 					 	$('#donate').slideToggle('slow')
 						$('#donate').toggleClass('notification is-success')
@@ -151,3 +160,89 @@
     </div>
   </div>
 </div>
+
+<div class="modal" id="loadingModal">
+  <div class="modal-background"></div>
+  <div class="modal-content">
+    <p class="image is-4by3">
+      <img src="http://lvh.me:5000/images/loading.gif" alt="">
+    </p>
+  </div>
+  <button class="modal-close is-large" aria-label="close"></button>
+</div>
+<script type="text/javascript">
+document.onreadystatechange = function() {
+	if (document.readyState === "complete") {
+		$.ajaxSetup({
+			headers : {
+				authorization: "{{header}}"
+			}
+		});
+
+
+		var pvcnumber = $('#pvc_confirm').val()
+		if (pvcnumber === '') {
+			$('#pvc_confirm').removeAttr('readonly')
+		}
+
+		$('#pvc_confirm').change(function(event) {
+			$('#loadingModal').addClass('is-active')
+			$.getJSON('http://192.168.8.105:8888/api/checkpvc/'+$('#pvc_number').val(), function(json, textStatus) {
+				if (json.success === true) {
+					$('#pvc_error').html('already exist. <code>E66.3</code>')
+					$('#pvc_confirm').addClass('is-invalid')
+					$('#loadingModal').removeClass('is-active')
+				} else {
+					$.ajax({
+						url: 'http://192.168.0.100:8888/api/member/'+response.userId,
+						type: 'PATCH',
+						data: {pvc: $('#pvc_confirm').val()}
+					})
+					.done(function(data) {
+						$('#loadingModal').removeClass('is-active')
+						$('#pvc_confirm').attr('readonly');
+					})
+					.fail(function(err) {
+						$('#loadingModal').removeClass('is-active')
+						console.log("error", err);
+					})
+
+				}
+			});
+
+		});
+
+		var theImage = "{{json.passport}}"
+		var lstSplit = theImage.split('/');
+
+		$.cloudinary.config({ cloud_name: 'inidaname', secure: true});
+
+		var CreatedImage = $.cloudinary.image("campaign", {transformation: [{overlay: lstSplit[7], width: "1.6", height: "1.6", gravity: "faces", flags: "region_relative", crop: "crop"},{effect: "grayscale:50"},{effect: "vignette"}, {flags: "layer_apply", width: 230, radius: "max", gravity: "center", y: 7, x: -2, crop: "scale"} ]})
+		var theImgSrc = CreatedImage.attr('src');
+
+
+		if (lstSplit.length !== 0) {
+			$("#shareRound").jsSocials({
+				url: theImgSrc,
+				text: "ADP Action Democratic Party The Credible Alternative #TheCredibleAlternative Join Us today visit www.adp.ng",
+				showCount: false,
+				showLabel: false,
+				shares: [
+					{ share: "twitter", via: "adpng", hashtags: "JoinADP,TheCredibleAlternative" },
+					"facebook",
+					"linkedin",
+					"whatsapp"
+				]
+			});
+			$('#clImage').append($.cloudinary.image("campaign", {transformation: [
+				{overlay: lstSplit[7], width: "1.6", height: "1.6", gravity: "faces", flags: "region_relative", crop: "crop"},
+				{effect: "grayscale:50"},
+				{effect: "vignette"},
+				{flags: "layer_apply", width: 230, radius: "max", gravity: "center", y: 7, x: -2, crop: "scale"}
+			]}))
+		} else {
+			$('#uploadPicHere').css('display', 'block');
+		}
+	}
+}
+</script>

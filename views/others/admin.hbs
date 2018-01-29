@@ -1,6 +1,12 @@
 <script type="text/javascript">
 document.onreadystatechange = function() {
 	if (document.readyState === "complete") {
+		$.ajaxSetup({
+			headers : {
+				authorization: "{{header}}"
+			}
+		});
+
 
 		$.getJSON('lists', function(json, textStatus) {
 			ThisMember.current = json.allMember;

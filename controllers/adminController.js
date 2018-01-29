@@ -29,11 +29,11 @@ router.all('/*', isAuthenticated, (req, res, next) => {
 
 // rendering the home page
 router.get('/', isAuthenticated, (req, res, next) => {
-	fetch('http://192.168.0.100:8888/api/member/'+req.session.user)
+	fetch(process.env.ADDR+'/member/'+req.session.user, {headers: {authorization: req.headers.authorization}})
 	.then(function(res) {
 		return res.json();
 	}).then(function(json) {
-		res.status(200).render('others/admin', {json, title: "Admin Section"});
+		res.status(200).render('others/admin', {json, title: "Admin Section", header: req.headers.authorization});
 	});
 });
 
@@ -48,7 +48,7 @@ router.post('/', (req, res) => {
 
 	  // console.log(body);
 	  request.post(
-	      'http://192.168.0.100:8888/api/admin/register',
+	      process.env.ADDR+'/admin/register',
 	      { json: body},
 	      function (error, response, body) {
 	          if (!error && response.statusCode == 200) {

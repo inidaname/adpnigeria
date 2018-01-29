@@ -28,7 +28,7 @@ router.get('/', isAuthenticated, (req, res) => {
 
 
 router.post('/', (req, res) => {
-	fetch(process.env.ADDR+'/memberphone/'+req.body.phone_number)
+	fetch(process.env.ADDR+'/memberphone/'+req.body.phone_number, {headers: {authorization: req.headers.authorization}})
 	.then(function(response) {
 	  return response.json();
   }).then(function(respo) {

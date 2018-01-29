@@ -142,6 +142,12 @@
 	  <script type="text/javascript">
 	  document.onreadystatechange = function() {
 	  	if (document.readyState === "complete") {
+        $.ajaxSetup({
+          headers : {
+            authorization: "{{header}}"
+          }
+        });
+
 			$('#adminInfos').val(getCookie('admin_id'))
 	  	}
 	  }
@@ -186,7 +192,7 @@
 					  </tr>
 				  </tfoot>
 				  <tbody>
-					  {{#each adims}}
+					  {{#each admins}}
 					  <tr>
 						  <td class="is-size-6-desktop is-size-7"><a class="button is-success" onclick="approveUser('{{this._id}}')">A</a> &nbsp;<a class="button is-danger" onclick="declineUser('{{this._id}}')">D</a></td>
 						  <td class="is-size-6-desktop is-size-7">{{this.personalInfo.full_name}}</td>

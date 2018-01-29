@@ -59,16 +59,16 @@ router.all('/*', isAuthenticated, (req, res, next) => {
 
 router.get('/:subdomain', isAuthenticated, (req, res) => {
 	if (req.params.subdomain === 'dashboard') {
-		fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+		fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 		.then((res) => {
 			return res.json();
 		}).then((json) => {
-			res.render('others/index', {title: 'Dashboard', json});
+			res.render('others/index', {title: 'Dashboard', json, header: req.headers.authorization});
 		})
 	} else if (req.params.subdomain === 'admin') {
 		if (req.cookies.admin_id) {
 			var theUserMe;
-			fetch(process.env.ADDR+'/admin/members')
+			fetch(process.env.ADDR+'/admin/members', {headers: {authorization: req.headers.authorization}})
 				.then((res) => {
 					return res.json();
 				}).then((members) => {
@@ -122,10 +122,10 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 						}
 					})
 					theUserMe.adminid = req.cookies.admin_id
-					res.render('others/members', {member: theGroupData, json: theUserMe, admin: true});
+					res.render('others/members', {member: theGroupData, json: theUserMe, admin: true, header: req.headers.authorization});
 				})
 		} else if (req.cookies.admin_req) {
-			fetch(process.env.ADDR+'/admin/'+req.cookies.user_id)
+			fetch(process.env.ADDR+'/admin/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 			.then((res) => {
 				return res.json();
 			}).then((json) => {
@@ -133,7 +133,7 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 					res.clearCookie('admin_req')
 					res.cookie('admin_id', json._id)
 					var theUserMe;
-					fetch(process.env.ADDR+'/admin/members')
+					fetch(process.env.ADDR+'/admin/members', {headers: {authorization: req.headers.authorization}})
 						.then((res) => {
 							return res.json();
 						}).then((members) => {
@@ -187,21 +187,21 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 								}
 							})
 
-							res.render('others/members', {member: theGroupData, json: theUserMe, admin: true});
+							res.render('others/members', {member: theGroupData, json: theUserMe, admin: true, header: req.headers.authorization});
 						})
 				} else {
-					res.render('others/regadmin', {title: 'Admin Section', json: json.personalInfo});
+					res.render('others/regadmin', {title: 'Admin Section', json: json.personalInfo, header: req.headers.authorization});
 				}
 			})
 		} else {
-			fetch(process.env.ADDR+'/admin/'+req.cookies.user_id)
+			fetch(process.env.ADDR+'/admin/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 			.then((res) => {
 				return res.json();
 			}).then((json) => {
 				if (json.approve === true) {
 					res.cookie('admin_id', json._id)
 					var theUserMe;
-					fetch(process.env.ADDR+'/admin/members')
+					fetch(process.env.ADDR+'/admin/members', {headers: {authorization: req.headers.authorization}})
 						.then((res) => {
 							return res.json();
 						}).then((members) => {
@@ -257,22 +257,22 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 
 							theUserMe.adminid = json._id
 
-							res.render('others/members', {member: theGroupData, json: theUserMe, admin: true});
+							res.render('others/members', {member: theGroupData, json: theUserMe, admin: true, header: req.headers.authorization});
 						})
 				} else if (json.approve === false) {
 					res.cookie('admin_req', req.cookies.user_id)
-					fetch(process.env.ADDR+'/admin/'+req.cookies.user_id)
+					fetch(process.env.ADDR+'/admin/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 					.then((res) => {
 						return res.json();
 					}).then((json) => {
-						res.render('others/regadmin', {title: 'Admin Section', json: json.personalInfo});
+						res.render('others/regadmin', {title: 'Admin Section', json: json.personalInfo, header: req.headers.authorization});
 					})
 				} else {
-					fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+					fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 					.then((res) => {
 						return res.json();
 					}).then((json) => {
-						res.render('others/regadmin', {title: 'Admin Section', json: json});
+						res.render('others/regadmin', {title: 'Admin Section', json: json, header: req.headers.authorization});
 					})
 				}
 			})
@@ -284,7 +284,7 @@ router.get('/:subdomain', isAuthenticated, (req, res) => {
 router.get('/:subdomain/members/lists', (req, res) => {
 
 	if (req.params.subdomain === 'admin') {
-		fetch(process.env.ADDR + '/admin/members').then((res) => {
+		fetch(process.env.ADDR + '/admin/members', {headers: {authorization: req.headers.authorization}}).then((res) => {
 			return res.json();
 		}).then((members) => {
 			var theUserMe;
@@ -383,7 +383,7 @@ router.get('/:subdomain/members/lists', (req, res) => {
 
 //routes to get all members out for statistics
 router.get('/:subdomain/members', isAuthenticated, isAdmin, (req, res) => {
-	fetch(process.env.ADDR+'/admin/'+req.cookies.user_id)
+	fetch(process.env.ADDR+'/admin/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 		 .then(function(res) {
 			  return res.json();
 		 }).then(function(jsonAD) {
@@ -397,15 +397,15 @@ router.get('/:subdomain/members', isAuthenticated, isAdmin, (req, res) => {
 					 if (!req.cookies.admin_req) {
 						 res.cookie('admin_req', json._id)
 					 }
-					 res.render('others/regadmin', {title: 'Admin Section', json: json});
+					 res.render('others/regadmin', {title: 'Admin Section', json: json, header: req.headers.authorization});
 				 }
 			 } else {
 				 res.clearCookie("admin_req");
-				 fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+				 fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 				 .then((res) => {
 					 return res.json();
 				 }).then((json) => {
-					 res.render('others/regadmin', {title: 'Admin Section', json: json});
+					 res.render('others/regadmin', {title: 'Admin Section', json: json, header: req.headers.authorization});
 				 })
 			 }
 		 });
@@ -413,7 +413,7 @@ router.get('/:subdomain/members', isAuthenticated, isAdmin, (req, res) => {
 
 router.get('/:subdomain/authority', isAuthenticated, isAdmin, (req, res) => {
   if (req.params.subdomain === 'admin') {
-	  fetch(process.env.ADDR+'/admin')
+	  fetch(process.env.ADDR+'/admin', {headers: {authorization: req.headers.authorization}})
   	.then((res) => {
   		return res.json();
   	}).then((json) => {
@@ -466,7 +466,7 @@ router.get('/:subdomain/authority', isAuthenticated, isAdmin, (req, res) => {
 			}
 		})
 		perInC.personalInfo.level = perInC.level
-		res.status(200).render('others/authority', {json: perInC.personalInfo, admin: adminCheck, adims: arryP, title: 'Authority'});
+		res.status(200).render('others/authority', {json: perInC.personalInfo, admin: adminCheck, admins: arryP, title: 'Authority', header: req.headers.authorization});
   	})
   }
 });
@@ -505,7 +505,7 @@ router.post('/:subdomain', isAuthenticated, (req, res) => {
 
 router.get('/:subdomain/platform', isAuthenticated, (req, res) => {
 	if (req.params.subdomain === 'dashboard') {
-		fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+		fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 		.then((res) => {
 			return res.json();
 		}).then((json) => {
@@ -524,15 +524,15 @@ router.post('/:subdomain/platform', (req, res) => {
 		  function (err, response, body) {
 			  if (!err) {
 			  	// FIXME: To send email after return
-			  	res.redirect('/pay/');
+			  	res.send({payfor: response.position});
 			  }
 		  }
 	  )
   }
 });
 
-router.get('/:subdomain/profile', (req, res) => {
-	fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+router.get('/:subdomain/profile', isAuthenticated, (req, res) => {
+	fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 	.then((res) => {
 		return res.json();
 	}).then((json) => {
@@ -549,7 +549,7 @@ router.get('/:subdomain/profile', (req, res) => {
 		} else {
 			json.proage = moment().diff(json.dateCreated, 'years') + " Year(s) Old"
 		}
-		res.render('others/profile', {title: 'Dashboard', json});
+		res.render('others/profile', {title: 'Dashboard', json, header: req.headers.authorization});
 	})
 });
 

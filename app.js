@@ -14,6 +14,7 @@ const jwt = require('jsonwebtoken');
 const favicon = require('serve-favicon');
 const sassMiddleware = require('node-sass-middleware');
 const cookieParser = require('cookie-parser');
+const request = require('request');
 const cookieSession = require('cookie-session')
 const expressSanitizer = require('express-sanitizer');
 var db = require('./db');
@@ -35,6 +36,42 @@ var statesController = require('./controllers/statesController');
 
 
 const app = express();
+
+
+
+var GetToken = {
+  set token(name) {
+    this.Token = name;
+  },
+  Token: null
+}
+
+var tokenFun = function (req, res, next) {
+
+
+	var body = {
+		email: 'contact@adp.ng',
+		password: 'myNewPassword'
+	}
+	if (typeof req.headers['authorization'] === 'undefined') {
+		request.post(
+			process.env.ADDR+'/auth/login',
+			{ json: body},
+			function (err, response, body) {
+				if (typeof body !== 'undefined' && body.message === 'Auth successful') {
+					req.headers['authorization'] = body.token
+					// console.log(req.headers);
+					next()
+				}
+			})
+	} else {
+		// req.headers['authorization'] = ""
+		console.log("the token passed", req.headers['authorization']);
+		next()
+	}
+}
+
+
 
 
 app.use(function(req, res, next) {
@@ -85,16 +122,16 @@ app.use(subdomain({
 app.use(express.static(__dirname + '/public'));
 // app.use(methodoverride('_method'));
 app.use('/', indexController);
-app.use('/about', aboutController);
-app.use('/structure', structureController);
-app.use('/contact', contactController);
-app.use('/register', registerController);
-app.use('/pay', payController);
-app.use('/myprefix', dashboardController);
-app.use('/donate', donateController);
-app.use('/login', loginController);
-app.use('/states', statesController);
-app.use('/state', statesController);
+app.use('/about', tokenFun, aboutController);
+app.use('/structure', tokenFun, structureController);
+app.use('/contact', tokenFun, contactController);
+app.use('/register', tokenFun, registerController);
+app.use('/pay', tokenFun, payController);
+app.use('/myprefix', tokenFun, dashboardController);
+app.use('/donate', tokenFun, donateController);
+app.use('/login', tokenFun, loginController);
+app.use('/states', tokenFun, statesController);
+// app.use('/state', tokenFun, statesController);
 
 
 // catch 404 and forward to error handler
