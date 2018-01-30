@@ -48,8 +48,8 @@ var GetToken = {
 
 var tokenFun = function (req, res, next) {
 	var body = {
-		email: 'contact@adp.ng',
-		password: 'myNewPassword'
+		email: process.env.EMAIL,
+		password: process.env.EPASS
 	}
 	if (typeof req.headers['authorization'] === 'undefined') {
     // console.log(req.headers.authorization);
