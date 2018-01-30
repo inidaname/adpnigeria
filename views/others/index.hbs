@@ -116,7 +116,7 @@
   <div class="modal-background"></div>
   <div class="modal-content">
     <p class="image is-4by3">
-      <img src="http://lvh.me:5000/images/loading.gif" alt="">
+      <img src="http://actiondemocraticparty.org/images/loading.gif" alt="">
     </p>
   </div>
   <button class="modal-close is-large" aria-label="close"></button>
@@ -211,7 +211,7 @@ document.onreadystatechange = function() {
 		 								response.amount = document.getElementById('amount').value
 		 								response.purpose = "Member Donation to the Party"
 		 								response.status = "Success"
-		 								$.post('http://lvh.me:5000/paid', response, function(data, textStatus, xhr) {
+		 								$.post('http://actiondemocraticparty.org/paid', response, function(data, textStatus, xhr) {
 		 									$('donate').slideToggle('slow')
 		 								});
 		 							}

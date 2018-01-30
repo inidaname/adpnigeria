@@ -28,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <span id="fillForm" class="text-danger"></span>
-        <a href="http://dashboard.lvh.me:5000" class="btn btn-sm btn-success">Paid Already</a>
+        <a href="http://dashboard.actiondemocraticparty.org" class="btn btn-sm btn-success">Paid Already</a>
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Let Me Pay On Web</button>
         <button type="button" onclick="payHere()" id="chBtn" class="btn btn-sm btn-primary">I Dialed the Code</button>
         <button type="button" onclick="payUp()" id="PayUp" class="btn btn-sm btn-primary d-none">Send</button>
@@ -132,7 +132,7 @@
             }
 
             $.post('paid', paidData, function(data, textStatus, xhr) {
-              location.replace("dashboard.lvh.me:5000");
+              location.replace("dashboard.actiondemocraticparty.org");
             });
           }
         }
@@ -188,7 +188,7 @@
 										data: {MemberVerified: true}
 									})
 									.done(function(data) {
-										window.location.replace("http://dashboard.lvh.me:5000")
+										window.location.replace("http://dashboard.actiondemocraticparty.org")
 										console.log("success", data);
 
 									})
