@@ -47,13 +47,13 @@ var GetToken = {
 }
 
 var tokenFun = function (req, res, next) {
-
-
 	var body = {
 		email: 'contact@adp.ng',
 		password: 'myNewPassword'
 	}
 	if (typeof req.headers['authorization'] === 'undefined') {
+    // console.log(req.headers.authorization);
+
 		request.post(
 			process.env.ADDR+'/auth/login',
 			{ json: body},
@@ -65,9 +65,24 @@ var tokenFun = function (req, res, next) {
 				}
 			})
 	} else {
-		// req.headers['authorization'] = ""
-		console.log("the token passed", req.headers['authorization']);
-		next()
+    fetch(process.env.ADDR, {headers: {authorization: req.headers.authorization}})
+  	.then((res) => {
+  		return res.json();
+  	}).then((json) => {
+      if (json.message === 'Auth failed') {
+      		request.post(
+      			process.env.ADDR+'/auth/login',
+      			{ json: body},
+      			function (err, response, body) {
+      				if (typeof body !== 'undefined' && body.message === 'Auth successful') {
+      					req.headers['authorization'] = body.token
+      					next()
+      				}
+      			})
+      } else {
+        next()
+      }
+     })
 	}
 }
 

@@ -6,7 +6,7 @@ $(document).ready(function() {
     // replace 'demo' with your cloud name in the line above
     cl.responsive();
 
-	 // $.post('http://192.168.0.100:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
+	 // $.post('http://192.169.231.145:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
 		//  console.log(data);
 	 // });
 
@@ -260,7 +260,7 @@ $(document).ready(function() {
 			// 			$('#phone_number').parent().removeClass('is-Invalid')
       //
 			// 			//checking if user phone number already exist
-			// 			$.getJSON('http://192.168.0.100:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
+			// 			$.getJSON('http://192.169.231.145:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
 			// 				if (json.success === true) {
 			// 					$('#phoneError').html('already exist. <code>E66.3</code>')
 			// 					$('#phone_number').addClass('is-invalid')

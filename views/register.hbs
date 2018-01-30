@@ -84,6 +84,7 @@
 						<figcaption class="figure-caption" id="ShowImage"></figcaption>
 					</figure>
 					<div class="form-group">
+            <input type="text" hidden name="headed" value="{{header}}">
 						<label class="">Upload Passport</label> &nbsp;
 						<button type="button" id="upload_widget_opener" class="btn btn-success btn-lg">Click Here</button>
 						<!-- <input type="file" title="Choose a Passport" id="passport" onchange="PreviewIcon()" class="btn-primary" accept="image/*"> -->
@@ -251,41 +252,36 @@
 
 
       			$('#phone_number').change(function(event) {
-      					$.getJSON('http://192.168.8.104:8888/api/checkexist/'+$('#phone_number').val(), function(json, textStatus) {
-      						console.log(json, textStatus);
+      					$.getJSON('http://192.169.231.145:8888/api/checkexist/'+$('#phone_number').val(), function(json, textStatus) {
+                  $('#phoneError').html('')
+                  $('#phone_number').removeClass('is-invalid')
+                  $('#NextBtn').removeAttr('disabled');
       						if (json.success === true) {
       							$('#phoneError').html('already exist. <code>E66.3</code>')
       							$('#phone_number').addClass('is-invalid')
-      							if ($.inArray('phone_number', theError) === -1) {
-      								theError.push('phone_number');
-      							}
+                    $('#NextBtn').attr('disabled', 'true');
       						} else {
-      							if (theError.length >= '1') {
-      								var indexPhone = theError.indexOf('phone_number');
-      								if ($.inArray('phone_number', theError) > -1) {
-      									theError.splice(indexPhone, 1);
-      								}
-      							}
+                    $('#NextBtn').removeAttr('disabled');
+                    $('#phoneError').html('')
+                    $('#phone_number').removeClass('is-invalid')
       						}
       					});
       			});
 
       			// checking pvc
       			$('#pvc_number').change(function(event) {
-      					$.getJSON('http://192.168.8.105:8888/api/checkpvc/'+$('#pvc_number').val(), function(json, textStatus) {
+      					$.getJSON('http://192.169.231.145:8888/api/checkpvc/'+$('#pvc_number').val(), function(json, textStatus) {
+                  $('#pvc_error').html(' ')
+                  $('#pvc_number').removeClass('is-invalid')
+                  $('#NextBtn').removeAttr('disabled');
       						if (json.success === true) {
       							$('#pvc_error').html('already exist. <code>E66.3</code>')
       							$('#pvc_number').addClass('is-invalid')
-      							if ($.inArray('pvc_number', theError) === -1) {
-      								theError.push('pvc_number');
-      							}
+                    $('#NextBtn').attr('disabled', 'true');
       						} else {
-      							if (theError.length >= '1') {
-      								var indexPhone = theError.indexOf('pvc_number');
-      								if ($.inArray('pvc_number', theError) > -1) {
-      									theError.splice(indexPhone, 1);
-      								}
-      							}
+                    $('#pvc_error').html(' ')
+                    $('#pvc_number').removeClass('is-invalid')
+                    $('#NextBtn').removeAttr('disabled');
       						}
       					});
       			});

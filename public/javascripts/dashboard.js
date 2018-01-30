@@ -6,6 +6,9 @@ $(document).ready(function() {
     // // replace 'demo' with your cloud name in the line above
     // cl.responsive();
 
+		var logOut = function () {
+			console.log("Log Out");
+		}
 
 	$('#ntExco').click(function(event) {
 		event.preventDefault()
@@ -13,7 +16,7 @@ $(document).ready(function() {
 			$(this).addClass('is-loading')
 			document.getElementById('showCon').className = ""
 			$.ajax({
-				url: 'http://192.168.0.100:8888/api/memberphone/'+$('#pronat').val(),
+				url: 'http://192.169.231.145:8888/api/memberphone/'+$('#pronat').val(),
 				type: 'GET',
 				dataType: 'JSON'
 			})

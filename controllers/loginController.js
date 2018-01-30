@@ -33,9 +33,9 @@ router.post('/', (req, res) => {
 	  return response.json();
   }).then(function(respo) {
 	  if (respo.full_name === req.body.full_name) {
-		  req.session.user = respo._id
+		  // req.session.user = respo._id
 
-		 res.cookie('user_id', respo._id, {domain: '.lvh.me'});
+		 res.cookie('user_id', respo._id, {domain: '.lvh.me', expires: new Date(Date.now() + 900000) });
 		 if (respo.MemberVerified === false) {
 			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login, <span class='alert-danger'>Please note that you are yet to pay your membershi due, the system will take you to the payment page.</span> <br>Thank You", title: 'Membership'});
 		 } else {

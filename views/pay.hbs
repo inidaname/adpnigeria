@@ -1,19 +1,37 @@
 <div class="modal fade" id="unpaid">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          <span class="sr-only">Close</span>
-        </button>
-        <h4 class="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p>One fine body&hellip;</p>
+      <div class="modal-body text-center">
+        <span  id="theImage">
+          <img data-src="/images/payment.jpg" class="cld-responsive img-rounded center-block w-75 ml-auto mr-auto">
+          <p class="w-50 mr-auto ml-auto mt-4 fullM text-center">
+            Please if you have paid and you are still seeing this screen contact the Secretariat. Click I have Paid Already
+          </p>
+        </span>
+        <div class="d-none" id="mbPay">
+          <p class="text-center">
+            Thank You for donating to ADP, Please provide details below.
+          </p>
+          <div class="form-group">
+            <label class="label">Full Name</label>
+            <input type="text" name="full_name" id="name_mobile" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label class="label">Bank Name</label>
+            <input type="text" name="bank_name" id="bank_name" class="form-control" value="">
+          </div>
+          <div class="form-group">
+            <label class="label">Phone Number</label>
+            <input type="text" name="paidMobile" id="paidMobile" class="form-control" value="">
+          </div>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <span id="fillForm" class="text-danger"></span>
+        <a href="http://dashboard.lvh.me:5000" class="btn btn-sm btn-success">Paid Already</a>
+        <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Let Me Pay On Web</button>
+        <button type="button" onclick="payHere()" id="chBtn" class="btn btn-sm btn-primary">I Dialed the Code</button>
+        <button type="button" onclick="payUp()" id="PayUp" class="btn btn-sm btn-primary d-none">Send</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
@@ -62,6 +80,65 @@
 					}
 				}
 
+        function payHere (){
+          var theImage = document.getElementById('theImage')
+          var chBtn = document.getElementById('chBtn')
+          var mbPay = document.getElementById('mbPay')
+          var PayUp = document.getElementById('PayUp')
+          theImage.style.display = 'none'
+          mbPay.className = "d-block text-left w-50 fullM mr-auto ml-auto"
+          chBtn.className = "d-none"
+          PayUp.className = "btn btn-primary"
+        }
+
+        function payUp() {
+          $.ajaxSetup({
+            headers : {
+              authorization: "{{header}}"
+            }
+          });
+
+          var name_mobile = document.getElementById('name_mobile').value
+          var paidMobile = document.getElementById('paidMobile').value
+          var bank_name = document.getElementById('bank_name').value
+
+          if (paidMobile == "") {
+            document.getElementById('fillForm').innerHTML = "Please provide information"
+          } else {
+
+            function getCookie(cname) {
+                var name = cname + "=";
+                var decodedCookie = decodeURIComponent(document.cookie);
+                var ca = decodedCookie.split(';');
+                for(var i = 0; i <ca.length; i++) {
+                    var c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                        c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                        return c.substring(name.length, c.length);
+                    }
+                }
+                return "";
+            }
+
+            var paidData = {
+              full_name: name_mobile,
+              phone_number: paidMobile,
+              amount: bank_name,
+              purpose: "Donation via Mobile Transfer",
+              status: "Pending",
+              userId: getCookie('user_id')
+            }
+
+            $.post('paid', paidData, function(data, textStatus, xhr) {
+              location.replace("dashboard.lvh.me:5000");
+            });
+          }
+        }
+
+
+
 				function payWithPaystack() {
 					var handler = PaystackPop.setup({
 						key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
@@ -76,7 +153,6 @@
 							}]
 						},
 						callback: function(response) {
-							$("#paidSus").modal("toggle");
 
 							function getCookie(cname) {
 							    var name = cname + "=";
@@ -107,7 +183,7 @@
 
 								$.post('paid', response, function(data, textStatus, xhr) {
 									$.ajax({
-										url: 'http://192.168.0.100:8888/api/member/'+response.userId,
+										url: 'http://192.169.231.145:8888/api/member/'+response.userId,
 										type: 'PATCH',
 										data: {MemberVerified: true}
 									})

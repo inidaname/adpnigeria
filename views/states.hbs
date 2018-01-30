@@ -104,33 +104,6 @@
 	  </div>
   </div>
 </div>
-<script type="text/javascript">
-
-document.onreadystatechange = function () {
-	if (document.readyState === "complete") {
-    $.ajaxSetup({
-      headers : {
-        authorization: "{{header}}"
-      }
-    });
-	}
-}
-var getThere = function (arguments) {
-	$.getJSON('lga', {param: arguments}, function(json, textStatus) {
-		if (json.contact !== null) {
-			var theContact = json.contact
-			$('#thisAddress').html(theContact.address)
-			$('#thisContact').html('<i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeNo+'</strong> &nbsp; &nbsp;<i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeEmail+'</strong>')
-		}
-		var places = json.docs
-		$('#listWards').html(' ')
-		places.forEach((item) => {
-			$('#listWards').append('<div class="col-sm-6 mb-4"><div class="card"><div class="card-body"><h5 class="card-title">'+item._id+' Ward</h5><p class="card-text"></p></div></div></div>')
-		})
-	});
-}
-
-</script>
 <!-- <script type="text/javascript">
 document.onreadystatechange = function() {
 	if (document.readyState === "complete") {
@@ -401,3 +374,28 @@ var ThisMember = {
 	}
 
 </script> -->
+<script type="text/javascript">
+document.onreadystatechange = function () {
+	if (document.readyState === "complete") {
+    $.ajaxSetup({
+      headers : {
+        authorization: "{{header}}"
+      }
+    });
+	}
+}
+var getThere = function (arguments) {
+	$.getJSON('lga', {param: arguments}, function(json, textStatus) {
+		if (json.contact !== null) {
+			var theContact = json.contact
+			$('#thisAddress').html(theContact.address)
+			$('#thisContact').html('<i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeNo+'</strong> &nbsp; &nbsp;<i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">'+theContact.officeEmail+'</strong>')
+		}
+		var places = json.docs
+		$('#listWards').html(' ')
+		places.forEach((item) => {
+			$('#listWards').append('<div class="col-sm-6 mb-4"><div class="card"><div class="card-body"><h5 class="card-title">'+item._id+' Ward</h5><p class="card-text"></p></div></div></div>')
+		})
+	});
+}
+</script>
