@@ -253,7 +253,7 @@ router.post('/', (req, res) => {
 		 process.env.ADDR+'/register',
 		 { json: body},
 		 function (error, response, bodies) {
-			 console.log(error, response, body);
+			 // console.log(error, response, body);
 			  if (!error) {
 					if (bodies.body) {
 						// console.log(bodies.body);
@@ -276,10 +276,10 @@ router.post('/', (req, res) => {
 								// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
 								// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
 								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'});
-								res.redirect('http://dashboard.actiondemocraticparty.org')
+								res.redirect('/pay/')
 							} else {
 								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'})
-								res.redirect('http://dashboard.actiondemocraticparty.org')
+								res.redirect('/pay/')
 							}
 						});
 					}
