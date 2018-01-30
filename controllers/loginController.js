@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
 
 		 res.cookie('user_id', respo._id, {domain: '.actiondemocraticparty.org', expires: new Date(Date.now() + 900000) });
 		 if (respo.MemberVerified === false) {
-			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login, <span class='alert-danger'>Please note that you are yet to pay your membershi due, the system will take you to the payment page.</span> <br>Thank You", title: 'Membership'});
+			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login, Please note that you are yet to pay your membership due, the page will take you to the payment page. Thank You", title: 'Membership'});
 		 } else {
 			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login your profile page will soon load", title: 'Membership'});
 		 }
