@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 	// }).then((json) => {
    //
 	// })
-	res.render('structure', {title: "Party Excos"});
+	res.render('structure', {title: "Party Excos", header: req.headers.authorization});
 });
 
 module.exports = router;

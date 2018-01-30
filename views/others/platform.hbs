@@ -1,6 +1,187 @@
 <div class="tile is-ancestor">
   <div class="tile is-7 is-vertical is-parent">
-    <div class="tile is-child box">
+    <script type="text/javascript">
+
+        fetch('http://192.169.231.145:8888/api/interestedmember/{{json._id}}')
+          .then(
+            function(response) {
+              var chint = document.getElementById('checkInterest')
+              var memberhere = document.getElementById('memberhere')
+              var unpaidMember = document.getElementById('unpaidMember')
+              if (response.status !== 200) {
+                chint.style.display = 'block'
+
+                console.log('Looks like there was a problem. Status Code: ' +
+                  response.status);
+                return;
+              } else {
+                chint.style.display = 'none'
+                // Examine the text in the response
+                response.json().then(function(data) {
+                  document.getElementById('docId').value =  data._id
+                  if (data.paid === false) {
+                    chint.style.display = 'none'
+                    unpaidMember.style.display = 'block'
+                    var pocont = document.getElementById('positionCon').value
+                    if (data.category === 'Party Exco') {
+                      document.getElementById('positionCon').value =  data.level +' '+ data.position
+
+                      // checking price
+                      document.getElementById('amounted').value = 'Please Contact the Secretariat for price details'
+                      document.getElementById('amounted').removeAttribute('readonly')
+                    } else {
+                      document.getElementById('positionCon').value =  data.position
+
+                      // rendering the positions
+                      switch (data.position) {
+                        case 'Presidency':
+                          document.getElementById('amounted').value = '5,000,000.00'
+                          break;
+                        case 'Governorship':
+                          document.getElementById('amounted').value = '3,500,000.00'
+                          break;
+                        case 'Senator':
+                          document.getElementById('amounted').value = '2,500,000.00'
+                          break;
+                        case 'Federal House of Assembly':
+                          document.getElementById('amounted').value = '1,500,000.00'
+                          break;
+                        case 'State House of Assembly':
+                          document.getElementById('amounted').value = '800,000.00'
+                          break;
+                        case 'Council Chairman':
+                          document.getElementById('amounted').value = '400,000.00'
+                          break;
+                        case 'Councilorship':
+                          document.getElementById('amounted').value = '100,000.00'
+                          break;
+                        default:
+
+                      }
+                    }
+                  } else {
+                    chint.style.display = 'none'
+                    unpaidMember.style.display = 'none'
+                    memberhere.style.display = 'block'
+                    document.getElementById('podi').innerHTML = data.position
+                    document.getElementById('countMem').innerHTML = data.count
+                  }
+                });
+              }
+            }
+          )
+          .catch(function(err) {
+            console.log('Fetch Error :-S', err);
+          });
+
+    </script>
+    <input type="hidden" id="docId" value="">
+    <div class="tile is-child box" style="display: none;" id="memberhere">
+      <div class="content">
+       <p class="title">
+         Your Expression of Interest
+       <p>
+       <p>
+         Your Nomination process on your Expression of Interest for <b id="podi"></b> is Activated.
+         <br>So far <b id="countMem"></b> has Nominated you
+       </p>
+      </div>
+    </div>
+    <div class="tile is-child box" style="display: none;" id="unpaidMember">
+      <form id="payment">
+        <h3>Payment for Nomination Form</h3>
+        <div class="field">
+          <label class="label">Candidate's Name</label>
+          <div class="control">
+            <input class="input" type="text" id="full_name" readonly value="{{json.full_name}}" placeholder="Text input">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Position Contesting For</label>
+          <div class="control">
+            <input class="input" type="text" readonly id="positionCon" placeholder="Text input">
+          </div>
+        </div>
+        <div class="field">
+          <label class="label">Nomination form Price in Naira</label>
+          <div class="control">
+            <input class="input" id="amounted" readonly type="text" placeholder="Text input">
+          </div>
+        </div>
+        <button type="button" class="button is-info is-large" onclick="payWithPaystack()" name="button">Pay Now</button>
+        <script>
+        function payWithPaystack() {
+          var theAmount = document.getElementById('amounted').value
+          var thesplit = theAmount.split(',')
+          var arrTr = thesplit.map((item) => {
+            return item.trim()
+          })
+          var themjoin = arrTr.join('')
+          var finalAmount = themjoin * 100
+
+          if (!isNaN(finalAmount)) {
+
+            var handler = PaystackPop.setup({
+              key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+              email: "{{json.email}}",
+              amount: finalAmount,
+              ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+              metadata: {
+                custom_fields: [{
+                  display_name: document.getElementById('full_name').value,
+                  variable_name: "mobile_number",
+                  value: "{{json.phone_number}}"
+                }]
+              },
+              callback: function(response) {
+
+                function getCookie(cname) {
+  							    var name = cname + "=";
+  							    var decodedCookie = decodeURIComponent(document.cookie);
+  							    var ca = decodedCookie.split(';');
+  							    for(var i = 0; i <ca.length; i++) {
+  							        var c = ca[i];
+  							        while (c.charAt(0) == ' ') {
+  							            c = c.substring(1);
+  							        }
+  							        if (c.indexOf(name) == 0) {
+  							            return c.substring(name.length, c.length);
+  							        }
+  							    }
+  							    return "";
+  							}
+                response.full_name = document.getElementById('full_name').value
+                response.phone_number = "{{json.phone_number}}"
+                response.email = "{{json.email}}"
+                response.amount = document.getElementById('amounted').value
+                response.purpose = "Payment for contesting " + document.getElementById('positionCon').value
+                response.status = "Success"
+                response.userId = getCookie('user_id')
+                $.post('http://lvh.me:5000/pay/paid', response, function(data, textStatus, xhr) {
+                  console.log(response);
+                  $.ajax({
+                    url: 'http://192.169.231.145:8888/api/interest/'+document.getElementById('docId').value,
+                    type: 'patch',
+                    data: {paid: true}
+                  })
+                  .done(function(data) {
+                    console.log("success", data);
+                  })
+                  .fail(function() {
+                    console.log("error");
+                  })
+                });
+              }
+            });
+            handler.openIframe();
+          } else {
+            document.getElementById('amounted').className = "input is-danger"
+          }
+        }
+        </script>
+      </form>
+    </div>
+    <div class="tile is-child box" style="display: none;" id="checkInterest">
       <p class="title">Contest for a Position</p>
 		<small>This is an Express of Interest form, Nomination will be handle by Party Members</small>
 		<div class="box has-text-centered" id="applyBTN">
@@ -28,7 +209,6 @@
  	  	}
  	  }
 		</script>
-
 		<!-- expression of interest for public office -->
 		<form id="PubexpressOfIn" style="display: none; margin-top:20px;" class="box" action="" method="post">
 			<div class="content has-text-centered">
@@ -43,8 +223,8 @@
 			        <option value="">Select One Please</option>
 			        <option value="Councilorship">Councilorship</option>
 			        <option value="Council Chairman">Council Chirman</option>
-			        <option value="State Assembly">State Assembly</option>
-			        <option value="Federal House Assembly">Federal House Assembly</option>
+			        <option value="State House of Assembly">State House of Assembly</option>
+			        <option value="Federal House of Assembly">Federal House of Assembly</option>
 			        <option value="Senator">Senator</option>
 			        <option value="Governorship">Governorship</option>
 			        <option value="Presidency">Presidency</option>
@@ -283,10 +463,10 @@
 			<button type="submit" class="button is-info is-large">Submit</button>
 		</form>
     </div>
-    <div class="tile is-child box">
+    <!-- <div class="tile is-child box">
       <p class="title">Two</p>
       <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin ornare magna eros, eu pellentesque tortor vestibulum ut. Maecenas non massa sem. Etiam finibus odio quis feugiat facilisis.</p>
-    </div>
+    </div> -->
   </div>
   <!-- <div class="tile is-parent">
     <div class="tile is-child box">

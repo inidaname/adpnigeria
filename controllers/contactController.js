@@ -7,7 +7,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', (req, res) => {
 	req.app.locals.layout = 'layout';
-  res.render('contact', {title: 'Contact Us'});
+  res.render('contact', {title: 'Contact Us', header: req.headers.authorization});
 });
 
 module.exports = router

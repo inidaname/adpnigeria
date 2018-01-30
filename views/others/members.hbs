@@ -15,6 +15,12 @@
 		// alternative to DOMContentLoaded event
 		document.onreadystatechange = function () {
 		  if (document.readyState === "interactive") {
+				$.ajaxSetup({
+					headers : {
+						authorization: "{{header}}"
+					}
+				});
+
 			  var ctx = document.getElementById("myChart");
 			  var youths = document.getElementById('youths').value,
 			  		old = document.getElementById('old').value,

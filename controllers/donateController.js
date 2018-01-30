@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/', (req, res) => {
-  res.render('donate', {title: "Donate Page"})
+  res.render('donate', {title: "Donate Page", header: req.headers.authorization})
 });
 
 router.post('/paid', (req, res) => {
