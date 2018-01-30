@@ -93,7 +93,7 @@
 						document.getElementById('showCon').className = ""
 						document.getElementById('levelReg').className = "has-text-primary"
 						document.getElementById('positionReg').className = "input"
-						$.post('http://lvh.me:5000/register/createExco', RegDatas, function(data, textStatus, xhr) {
+						$.post('http://actiondemocraticparty.org/register/createExco', RegDatas, function(data, textStatus, xhr) {
 							console.log(data);
 						});
 						// console.log(RegDatas);
@@ -109,7 +109,7 @@
 				Add The Office Address Here
 			<p>
 				<small>This is the contact address Your Members will see and also when people visit adp.ng/yourpage <br> <span class="has-text-danger">If you have filled this form before please kindly ignore</span></small>
-			<form id="contact_add" action="http://lvh.me:5000/register/contact" method="post">
+			<form id="contact_add" action="http://actiondemocraticparty.org/register/contact" method="post">
 				<label class="label">Phone Number</label>
 				<div class="field">
 				  <p class="control is-expanded">
