@@ -56,7 +56,7 @@
 						</div>
 						<div class="form-group">
 							<label for="loginPassword">Phone</label>
-							<input type="text" id="loginPassword" name="phone_number" class="form-control" placeholder="Phone, Email or Membership No">
+							<input type="text" id="loginPassword" name="phone_number" class="form-control" placeholder="Phone Number">
 							<p class="help-block" id="logErr">Use Your Phone Number</p>
 						</div>
 						<button type="submit" id="loginBTN" class="btn btn-primary btn-lg">Log In</button>
@@ -77,12 +77,14 @@
 					 <p>Please provide at least a phone number and/or email address</p>
 				  </div>
 				</div>
+
 				<div class="d-flex p-4 flex-column">
 					<figure class="figure preview" style="margin-bottom: 20px;">
-						<img src="#" id="preview" alt="" class="img-rounded">
+						<img src="#" id="preview" alt="" class="img-rounded w-75 ml-auto mr-auto">
 						<figcaption class="figure-caption" id="ShowImage"></figcaption>
 					</figure>
 					<div class="form-group">
+            <input type="text" hidden name="headed" value="{{header}}">
 						<label class="">Upload Passport</label> &nbsp;
 						<button type="button" id="upload_widget_opener" class="btn btn-success btn-lg">Click Here</button>
 						<!-- <input type="file" title="Choose a Passport" id="passport" onchange="PreviewIcon()" class="btn-primary" accept="image/*"> -->
@@ -99,6 +101,12 @@
 							});
 					  }, false);
 					</script>
+
+          <!-- collecting PVC number -->
+          <div class="form-group">
+            <label for="pvc">PVC Number <span class="text-muted">As displayed on your Voter Card</span></label>
+            <input type="text" class="form-control" id="pvc_number" name="pvc" value="">
+          </div>
 
 					<!-- full name field -->
 					<div class="form-group">
@@ -138,8 +146,8 @@
 
 					<!-- date of birth field -->
 					<div class="form-group">
-						<label for="dateofBirth">Date of Birth: dd/mm/year</label>
-						<input type="text" id="dateofBirth" required name="dateofBirth" class="form-control">
+						<label for="dateofBirth">Date of Birth: <span class="text-muted">dd-mm-year</span></label>
+						<input type="text" id="dateofBirth" required placeholder="01-12-1991" name="dateofBirth" class="form-control">
 						<div class="is-Invalid" id="dateCheck">
 
 						</div>
@@ -173,19 +181,19 @@
 					</div>
 					<div class="form-group">
 						<label for="localgovt">Local Government</label>
-						<select id="localgovt" class="form-control"  name="lgaName" placeholder=""></select>
+						<select id="localgovt" class="form-control" disabled  name="lgaName" placeholder=""></select>
 						<input type="hidden" id="grabLGA" name="lgaName" disabled class="form-control" value="">
 
 					</div>
 					<div class="form-group">
 						<label for="wardCT">Ward</label>
-						<select id="wardCT" class="form-control" name="wardName" placeholder=""></select>
+						<select id="wardCT" class="form-control" name="wardName" disabled placeholder=""></select>
 						<input type="hidden" id="grabWARD" name="wardName" disabled class="form-control" value="">
 
 					</div>
 					<div class="form-group">
 						<label for="pollingUnit">Your Voting Unit</label>
-						<select id="pollingUnit" class="form-control" name="pollingUnit" placeholder=""></select>
+						<select id="pollingUnit" class="form-control" name="pollingUnit" disabled placeholder=""></select>
 						<input type="hidden" id="grabPU" disabled name="pollingUnit" class="form-control" value="">
 
 					</div>
@@ -228,3 +236,69 @@
 	</form>
  </div>
 </div>
+<script type="text/javascript">
+  document.onreadystatechange = function () {
+    if (document.readyState === 'complete') {
+      // phone validation
+			var cleave = new Cleave('#loginPassword', {
+				 phone: true,
+				 phoneRegionCode: '{country}'
+			});
+      $.ajaxSetup({
+        headers : {
+          authorization: "{{header}}"
+        }
+      });
+
+
+      			$('#phone_number').change(function(event) {
+      					$.getJSON('http://192.169.231.145:8888/api/checkexist/'+$('#phone_number').val(), function(json, textStatus) {
+                  $('#phoneError').html('')
+                  $('#phone_number').removeClass('is-invalid')
+                  $('#NextBtn').removeAttr('disabled');
+      						if (json.success === true) {
+      							$('#phoneError').html('already exist. <code>E66.3</code>')
+      							$('#phone_number').addClass('is-invalid')
+                    $('#NextBtn').attr('disabled', 'true');
+      						} else {
+                    $('#NextBtn').removeAttr('disabled');
+                    $('#phoneError').html('')
+                    $('#phone_number').removeClass('is-invalid')
+      						}
+      					});
+      			});
+
+      			// checking pvc
+      			$('#pvc_number').change(function(event) {
+      					$.getJSON('http://192.169.231.145:8888/api/checkpvc/'+$('#pvc_number').val(), function(json, textStatus) {
+                  $('#pvc_error').html(' ')
+                  $('#pvc_number').removeClass('is-invalid')
+                  $('#NextBtn').removeAttr('disabled');
+      						if (json.success === true) {
+      							$('#pvc_error').html('already exist. <code>E66.3</code>')
+      							$('#pvc_number').addClass('is-invalid')
+                    $('#NextBtn').attr('disabled', 'true');
+      						} else {
+                    $('#pvc_error').html(' ')
+                    $('#pvc_number').removeClass('is-invalid')
+                    $('#NextBtn').removeAttr('disabled');
+      						}
+      					});
+      			});
+
+            //
+      			// // phone validation
+      			// var cleave = new Cleave('#phone_number', {
+      			// 	 phone: true,
+      			// 	 phoneRegionCode: '{country}'
+      			// });
+      			var cleave = new Cleave('#dateofBirth', {
+      				date: true,
+      			  delimiter: '-',
+      				datePattern: ['d', 'm', 'Y']
+      			});
+
+
+    }
+  }
+</script>

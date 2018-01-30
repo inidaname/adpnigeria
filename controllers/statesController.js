@@ -14,7 +14,7 @@ var Nigeria = mongojs(process.env.DB_URL, ['PollingUnits', 'Senates', 'FederalCo
 
 router.get('/', (req, res) => {
 	var states = [{_id: "ABIA"}, {_id: "ADAMAWA"}, {_id: "AKWA IBOM"}, {_id: "ANAMBRA"}, {_id: "BAUCHI"}, {_id: "BAYELSA"}, {_id: "BENUE"}, {_id: "BORNO"}, {_id: "CROSS RIVER"}, {_id: "DELTA"}, {_id: "EBONYI"}, {_id: "EDO"}, {_id: "EKITI"}, {_id: "ENUGU"}, {_id: "FCT"}, {_id: "GOMBE"}, {_id: "IMO"}, {_id: "JIGAWA"}, {_id: "KADUNA"}, {_id: "KANO"}, {_id: "KATSINA"}, {_id: "KEBBI"}, {_id: "KOGI"}, {_id: "KWARA"}, {_id: "LAGOS"}, {_id: "NASARAWA"}, {_id: "NIGER"}, {_id: "OGUN"}, {_id: "ONDO"}, {_id: "OSUN"}, {_id: "OYO"}, {_id: "PLATEAU"}, {_id: "RIVERS"}, {_id: "SOKOTO"}, {_id: "TARABA"}, {_id: "YOBE"}, {_id: "ZAMFARA"}];
-	res.status(200).render('states', {title: 'About the States', location: states, state: true})
+	res.status(200).render('states', {title: 'About the States', location: states, state: true, header: req.headers.authorization})
 
 });
 
@@ -33,10 +33,11 @@ router.get('/:states', (req, res) => {
 		  come: null
 		}
 
-	fetch(process.env.ADDR+'/contact/'+req.params.states)
+	fetch(process.env.ADDR+'/contact/'+req.params.states, {headers: {authorization: req.headers.authorization}})
 	.then((res) => {
 		return res.json();
 	}).then((json) => {
+		console.log(json);
 
 		json.forEach((item) => {
 			// console.log(item);
@@ -49,13 +50,13 @@ router.get('/:states', (req, res) => {
 
 		listOfthing.active = true
 	})
-	fetch(process.env.ADDR+'/excos/'+req.params.states)
-	.then((res) => {
-		return res.json();
-	}).then((json) => {
-		listOfthing.excos = json
-		listOfthing.active = true
-	})
+	// fetch(process.env.ADDR+'/excos/'+req.params.states)
+	// .then((res) => {
+	// 	return res.json();
+	// }).then((json) => {
+	// 	listOfthing.excos = json
+	// 	listOfthing.active = true
+	// })
 
 	Nigeria.PollingUnits.aggregate(
     {
@@ -84,7 +85,7 @@ router.get('/:states/lga', (req, res) => {
 		  come: null
 		}
 
-	fetch(process.env.ADDR+'/contact/'+req.params.states)
+	fetch(process.env.ADDR+'/contact/'+req.params.states, {headers: {authorization: req.headers.authorization}})
 	.then((res) => {
 		return res.json();
 	}).then((json) => {
@@ -127,7 +128,7 @@ router.get('/:states/ward', (req, res) => {
 		  come: null
 		}
 
-	fetch(process.env.ADDR+'/contact/'+req.params.states)
+	fetch(process.env.ADDR+'/contact/'+req.params.states, {headers: {authorization: req.headers.authorization}})
 	.then((res) => {
 		return res.json();
 	}).then((json) => {

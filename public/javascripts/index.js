@@ -6,7 +6,7 @@ $(document).ready(function() {
     // replace 'demo' with your cloud name in the line above
     cl.responsive();
 
-	 // $.post('http://192.168.0.100:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
+	 // $.post('http://192.169.231.145:8888/api/auth/login', {email: 'a@gmail.com', password: 'amaz'}, function(data, textStatus, xhr) {
 		//  console.log(data);
 	 // });
 
@@ -46,15 +46,21 @@ $(document).ready(function() {
 			//checking for local govt from states
 			stateReg.change(function(event) {
 				var emptyLGA = ['Select One'];
-				toggleModal()
-				$('#localgovt').html(" ")
-				$('#wardCT').html(" ")
-				$('#pollingUnits').html(" ")
-				$('#senates').html(" ")
-				$('#fedcons').html(" ")
-				$('#geoZone').html(" ")
 
-				if (stateReg.val() !== '') {
+				if (stateReg.val() !== 'Select State') {
+					toggleModal()
+					localgovt.removeAttr('disabled')
+					localgovt.html('<option value="Select One">Select One</option>')
+					wardCT.html('<option value="">Select LGA First</option')
+					wardCT.attr('disabled', 'true');
+					pollingUnit.html('<option value="">Select LGA and WARD First</option')
+					pollingUnit.attr('disabled', 'true');
+					$('#senatePat').html(' ')
+					$('#senateSp').val(' ')
+					$('#FedConPat').html(' ')
+					$('#FedSp').val(' ')
+
+
 					$.ajax({
 						url: 'getLGA',
 						type: 'GET',
@@ -63,12 +69,23 @@ $(document).ready(function() {
 					})
 					.done(function(data) {
 						data.forEach(elemLGA => {
-							$('#localgovt').append('<option value="'+elemLGA._id+'">'+elemLGA._id+'</option>')
+							$('#localgovt').append(`<option value="`+elemLGA._id+`">`+elemLGA._id+`</option>`)
 						});
 					})
 					.fail(function() {
 						console.log("error");
 					});
+				} else {
+					localgovt.attr('disabled', 'true')
+					localgovt.html('<option value="Select A State">Select One</option>')
+					wardCT.html('<option value="">Select LGA First</option')
+					wardCT.attr('disabled', 'true');
+					pollingUnit.html('<option value="">Select LGA and WARD First</option')
+					pollingUnit.attr('disabled', 'true');
+					$('#senatePat').html(' ')
+					$('#senateSp').val(' ')
+					$('#FedConPat').html(' ')
+					$('#FedSp').val(' ')
 				}
 			});
 
@@ -76,52 +93,73 @@ $(document).ready(function() {
 
 					localgovt.change(function(event) {
 						var emptyWard = ['Select Your Ward'];
-						wardCT.html(' ')
-						toggleModal()
-						$('#pollingUnits').html(" ")
-						$('#senates').html(" ")
-						$('#fedcons').html(" ")
-						$.ajax({
-							url: 'getWARD',
-							type: 'GET',
-							dataType: 'JSON',
-							data: {stateReg: stateReg.val(), lgaReg: localgovt.val()}
-						})
-						.done(function(data) {
-							$('#senatePat').html(data.Senatorial)
-							$('#senateSp').val(data.Senatorial)
-							$('#FedConPat').html(data.fedConst)
-							$('#FedSp').val(data.fedConst)
-							var thisData = data.docs
-							thisData.forEach(elemWard => {
-								wardCT.append('<option value="'+elemWard._id+'">'+elemWard._id+'</option>');
+						if (localgovt.val() !== 'Select One') {
+							wardCT.html('<option value="Select One">Select One</option')
+							wardCT.removeAttr('disabled');
+							pollingUnit.html('<option value="">Select WARD First</option')
+							pollingUnit.attr('disabled', 'true');
+							$('#senatePat').html(' ')
+							$('#senateSp').val(' ')
+							$('#FedConPat').html(' ')
+							$('#FedSp').val(' ')
+							toggleModal()
+							$.ajax({
+								url: 'getWARD',
+								type: 'GET',
+								dataType: 'JSON',
+								data: {stateReg: stateReg.val(), lgaReg: localgovt.val()}
+							})
+							.done(function(data) {
+								$('#senatePat').html(data.Senatorial)
+								$('#senateSp').val(data.Senatorial)
+								$('#FedConPat').html(data.fedConst)
+								$('#FedSp').val(data.fedConst)
+								var thisData = data.docs
+								thisData.forEach(elemWard => {
+									wardCT.append(`<option value="`+elemWard._id+`">`+elemWard._id+`</option>`);
+								});
+							})
+							.fail(function() {
+								console.log("error");
 							});
-						})
-						.fail(function() {
-							console.log("error");
-						});
+						} else {
+							wardCT.html('<option value="Select One">Select LGA</option')
+							wardCT.attr('disabled', 'true');
+							pollingUnit.html('<option value="">Select WARD First</option')
+							pollingUnit.attr('disabled', 'true');
+							$('#senatePat').html(' ')
+							$('#senateSp').val(' ')
+							$('#FedConPat').html(' ')
+							$('#FedSp').val(' ')
+						}
 					});
 
 					wardCT.change(function(event) {
 						var emptyPU = [' '];
-						pollingUnit.html(' ')
-						toggleModal()
-						$.ajax({
-							url: 'getPolling',
-							type: 'GET',
-							dataType: 'JSON',
-							data: {stateName: stateReg.val(), localgovtName: localgovt.val(), wardName: wardCT.val()}
-						})
-						.done(function(data) {
-							pollingUnit.html('<option value="">Please select your polling unit</option>')
-							data.forEach(elemPU => {
-								$('#loading').modal('hide')
-								pollingUnit.append('<option value="'+elemPU._id+'">'+elemPU._id+'</option>')
+						if (wardCT.val() !== 'Select One') {
+							pollingUnit.html('<option value="Select One">Select One</option')
+							pollingUnit.removeAttr('disabled');
+							toggleModal()
+							$.ajax({
+								url: 'getPolling',
+								type: 'GET',
+								dataType: 'JSON',
+								data: {stateName: stateReg.val(), localgovtName: localgovt.val(), wardName: wardCT.val()}
+							})
+							.done(function(data) {
+								pollingUnit.html('<option value="">Please select your polling unit</option>')
+								data.forEach(elemPU => {
+									$('#loading').modal('hide')
+									pollingUnit.append(`<option value="`+elemPU._id+`">`+elemPU._id+`</option>`)
+								});
+							})
+							.fail(function() {
+								console.log("error");
 							});
-						})
-						.fail(function() {
-							console.log("error");
-						});
+						} else {
+							pollingUnit.html('<option value="">Select WARD First</option')
+							pollingUnit.attr('disabled', 'true');
+						}
 					});
 
 
@@ -176,88 +214,81 @@ $(document).ready(function() {
 					}
 				}
 			});
-
-
-			// phone validation
-			var cleave = new Cleave('#phone_number', {
-				 phone: true,
-				 phoneRegionCode: '{country}'
-			});
-
-			//phone field formatting
-			$("#phone_number").intlTelInput({
-				initialCountry: "auto",
-				geoIpLookup: function(callback) {
-					$.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
-						var countryCode = (resp && resp.country)
-							? resp.country
-							: "";
-						callback(countryCode);
-					});
-				},
-				utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.6/js/utils.js" // just for formatting/placeholders etc
-			});
-
-			var telInput = $("#phone_number"),
-				errorMsg = $("#error-msg"),
-				validMsg = $("#valid-msg");
-
-			// initialise plugin
-			telInput.intlTelInput({utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.6/js/utils.js"});
-
-			var reset = function() {
-				telInput.removeClass("is-invalid");
-				errorMsg.addClass("d-none");
-				validMsg.addClass("d-none");
-			};
-
-			// on blur: validate
-			telInput.blur(function() {
-				reset();
-				if (theError.length >= '1') {
-					var indexPhone = theError.indexOf('phone_number');
-					if ($.inArray('phone_number', theError) > -1) {
-						theError.splice(indexPhone, 1);
-					}
-				}
-				if ($.trim(telInput.val())) {
-					if (telInput.intlTelInput("isValidNumber")) {
-						validMsg.removeClass("hide");
-						$('#phone_number').removeClass('is-invalid')
-						$('#phoneError').html(' ')
-						$('#phonealert').hide('slow');
-						$('#phone_number').parent().removeClass('is-Invalid')
-
-						//checking if user phone number already exist
-						$.getJSON('http://192.168.0.100:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
-							if (json.success === true) {
-								$('#phoneError').html('already exist. <code>E66.3</code>')
-								$('#phone_number').addClass('is-invalid')
-								if ($.inArray('phone_number', theError) === -1) {
-									theError.push('phone_number');
-								}
-							} else {
-								if (theError.length >= '1') {
-									var indexPhone = theError.indexOf('phone_number');
-									if ($.inArray('phone_number', theError) > -1) {
-										theError.splice(indexPhone, 1);
-									}
-								}
-							}
-						});
-					} else {
-						telInput.addClass("danger");
-						errorMsg.removeClass("d-none");
-						$('#phone_number').addClass('has-warning')
-						if ($.inArray('phone_number', theError) === -1) {
-							theError.push('phone_number')
-						}
-					}
-				}
-			});
-
-			// on keyup / change flag: reset
-			telInput.on("keyup change", reset);
+      //
+			// //phone field formatting
+			// $("#phone_number").intlTelInput({
+			// 	initialCountry: "auto",
+			// 	geoIpLookup: function(callback) {
+			// 		$.get('https://ipinfo.io', function() {}, "jsonp").always(function(resp) {
+			// 			var countryCode = (resp && resp.country)
+			// 				? resp.country
+			// 				: "";
+			// 			callback(countryCode);
+			// 		});
+			// 	},
+			// 	utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.6/js/utils.js" // just for formatting/placeholders etc
+			// });
+      //
+			// var telInput = $("#phone_number"),
+			// 	errorMsg = $("#error-msg"),
+			// 	validMsg = $("#valid-msg");
+      //
+			// // initialise plugin
+			// telInput.intlTelInput({utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/12.1.6/js/utils.js"});
+      //
+			// var reset = function() {
+			// 	telInput.removeClass("is-invalid");
+			// 	errorMsg.addClass("d-none");
+			// 	validMsg.addClass("d-none");
+			// };
+      //
+			// // on blur: validate
+			// telInput.blur(function() {
+			// 	reset();
+			// 	if (theError.length >= '1') {
+			// 		var indexPhone = theError.indexOf('phone_number');
+			// 		if ($.inArray('phone_number', theError) > -1) {
+			// 			theError.splice(indexPhone, 1);
+			// 		}
+			// 	}
+			// 	if ($.trim(telInput.val())) {
+			// 		if (telInput.intlTelInput("isValidNumber")) {
+			// 			validMsg.removeClass("hide");
+			// 			$('#phone_number').removeClass('is-invalid')
+			// 			$('#phoneError').html(' ')
+			// 			$('#phonealert').hide('slow');
+			// 			$('#phone_number').parent().removeClass('is-Invalid')
+      //
+			// 			//checking if user phone number already exist
+			// 			$.getJSON('http://192.169.231.145:8888/api/checkexist/'+$('#phone_number').intlTelInput("getNumber"), function(json, textStatus) {
+			// 				if (json.success === true) {
+			// 					$('#phoneError').html('already exist. <code>E66.3</code>')
+			// 					$('#phone_number').addClass('is-invalid')
+			// 					if ($.inArray('phone_number', theError) === -1) {
+			// 						theError.push('phone_number');
+			// 					}
+			// 				} else {
+			// 					if (theError.length >= '1') {
+			// 						var indexPhone = theError.indexOf('phone_number');
+			// 						if ($.inArray('phone_number', theError) > -1) {
+			// 							theError.splice(indexPhone, 1);
+			// 						}
+			// 					}
+			// 				}
+			// 			});
+			// 		} else {
+			// 			telInput.addClass("danger");
+			// 			errorMsg.removeClass("d-none");
+			// 			$('#phone_number').addClass('has-warning')
+			// 			if ($.inArray('phone_number', theError) === -1) {
+			// 				theError.push('phone_number')
+			// 			}
+			// 		}
+			// 	}
+			// });
+      //
+			// // on keyup / change flag: reset
+			// telInput.on("keyup change", reset);
 
 
 			// checking for email

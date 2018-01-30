@@ -1,0 +1,13 @@
+
+#starting the web application
+web:
+   #first building the dockerfile to run the instructions
+   build: .
+   #mapping the local system
+   volumes:
+      - ./:/app
+   #exposing the web port server
+   ports:
+      - "3000:3000"
+
+   command: nodemon /app/bin/www

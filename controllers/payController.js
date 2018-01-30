@@ -26,15 +26,16 @@ function isAuthenticated(req, res, next) {
 
 router.get('/', isAuthenticated, (req, res) => {
 	req.app.locals.layout = 'layout';
-		fetch(process.env.ADDR+'/member/'+req.cookies.user_id)
+		fetch(process.env.ADDR+'/member/'+req.cookies.user_id, {headers: {authorization: req.headers.authorization}})
 		.then((res) => {
 			return res.json();
 		}).then((docs) => {
-			res.status(200).render('pay', {docs, title: 'Make Payment Online'});
+			res.status(200).render('pay', {docs, title: 'Make Payment Online', header: req.headers.authorization});
 		})
 });
 
 router.post('/paid', (req, res) => {
+  console.log(req.body)
 	// console.log(body);
 	var body = req.body
 	request.post(

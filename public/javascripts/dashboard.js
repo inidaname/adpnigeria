@@ -1,12 +1,22 @@
 $(document).ready(function() {
 
+	$.cloudinary.config({ cloud_name: 'inidaname', secure: true});
+
+    // var cl = cloudinary.Cloudinary.new({cloud_name: "inidaname"});
+    // // replace 'demo' with your cloud name in the line above
+    // cl.responsive();
+
+		var logOut = function () {
+			console.log("Log Out");
+		}
+
 	$('#ntExco').click(function(event) {
 		event.preventDefault()
 		if ($('#pronat').val()) {
 			$(this).addClass('is-loading')
 			document.getElementById('showCon').className = ""
 			$.ajax({
-				url: 'http://192.168.0.100:8888/api/memberphone/'+$('#pronat').val(),
+				url: 'http://192.169.231.145:8888/api/memberphone/'+$('#pronat').val(),
 				type: 'GET',
 				dataType: 'JSON'
 			})
@@ -44,13 +54,6 @@ $(document).ready(function() {
 				$('#ntExco').removeClass('is-loading')
 				$('#naName strong').html('Member Not Found')
 			})
-
-         //
-			// $.getJSON('http://192.168.0.100:8888/api/memberphone/'+$('#pronat').val(), function(json, textStatus) {
-			// 	if (text) {
-         //
-			// 	}
-			// });
 		}
 	});
 });

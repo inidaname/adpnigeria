@@ -18,6 +18,9 @@ let transporter = nodemailer.createTransport({
 	host: process.env.MAILHOST,
 	port: process.env.MAILPORT,
 	secure: false, // true for 465, false for other ports
+	tls: {
+        rejectUnauthorized:false
+    },
 	auth: {
 		user: process.env.MAILUSER,
 		pass: process.env.MAILPASS
@@ -56,7 +59,7 @@ router.get('/', isAuthenticated, (req, res) => {
 	.then(function(response) {
 	  return response.json();
   }).then(function(respo) {
-	  res.status(200).render('register', {country: respo, title: 'Membership'});
+	  res.status(200).render('register', {country: respo, title: 'Membership', header: req.headers.authorization});
 	});
 });
 
@@ -247,35 +250,42 @@ router.post('/', (req, res) => {
 
 	// console.log(body);
 	request.post(
-		 process.env.ADDR+'/registernm',
+		 process.env.ADDR+'/register',
 		 { json: body},
-		 function (error, response, body) {
+		 function (error, response, bodies) {
+			 console.log(error, response, body);
 			  if (!error) {
-				  transporter.sendMail({
-					  from: 'contact@adp.ng', // sender address
-					  to: response.email, // list of receivers
-					  subject: response.full_name + ' Please Activate Your Membership', // Subject line
-					  template: 'emailtempl', // email template
-					  context: {
-						  full_name: response.full_name,
-					  }
-				  }, function (err, info) {
-					  if (!err) {
-						  console.log('Message sent: %s', info.messageId);
-				        // Preview only available when sending through an Ethereal account
-				        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
+					if (bodies.body) {
+						// console.log(bodies.body);
+						transporter.sendMail({
+							from: 'ADP National Secretariat <contact@adp.ng>', // sender address
+							to: bodies.body.email, // list of receivers
+							subject: bodies.body.full_name + ' Congratulations!, You are now A Member of ADP', // Subject line
+							template: 'emailtempl', // email template
+							context: {
+								full_name: bodies.body.full_name,
+								member_id: bodies.body.MemberAuth.TempID,
 
-				        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
-				        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+							}
+						}, function (err, info) {
+							if (!err) {
+								console.log('Message sent: %s', info.messageId);
+								// Preview only available when sending through an Ethereal account
+								console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
 
-						    request.post('/login/', {phone_number: response.phone_number})
-					  } else {
-						  request.post('/login/', {phone_number: response.phone_number})
-					  }
-				  });
+								// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
+								// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+								res.cookie('user_id', bodies.body._id, {domain: '.lvh.me'});
+								res.redirect('http://dashboard.lvh.me:5000')
+							} else {
+								res.cookie('user_id', bodies.body._id, {domain: '.lvh.me'})
+								res.redirect('http://dashboard.lvh.me:5000')
+							}
+						});
+					}
 			  } else {
-				  res.redirect(400, '//');
-			  	res.status(404).send({success: false});
+				  res.redirect('/register/');
+			  	// res.status(404).send({success: false});
 			  }
 		 }
 	);
