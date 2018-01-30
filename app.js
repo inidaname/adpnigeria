@@ -12,7 +12,7 @@ const methodoverride = require('method-override');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const favicon = require('serve-favicon');
-const sassMiddleware = require('node-sass-middleware');
+// const sassMiddleware = require('node-sass-middleware');
 const cookieParser = require('cookie-parser');
 const request = require('request');
 const cookieSession = require('cookie-session')
@@ -100,7 +100,7 @@ app.use(function(req, res, next) {
 app.use(cookieSession({
   name: 'session',
   keys: [process.env.key1, process.env.key2],
-  cookie: { domain: '.lvh.me', maxAge: 100000000000 }
+  cookie: { domain: '.actiondemocraticparty.org', maxAge: 100000000000 }
 }))
 // app.use(session({
 // 	secret: process.env.secretKey,
@@ -119,17 +119,17 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressSanitizer());
 app.use(cookieParser());
-
-app.use(sassMiddleware({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  indentedSyntax: false, // true = .sass and false = .scss
-  sourceMap: true
-}));
+//
+// app.use(sassMiddleware({
+//   src: path.join(__dirname, 'public'),
+//   dest: path.join(__dirname, 'public'),
+//   indentedSyntax: false, // true = .sass and false = .scss
+//   sourceMap: true
+// }));
 
 
 app.use(subdomain({
-	baseUrl: 'lvh.me',
+	baseUrl: 'actiondemocraticparty.org',
 	prefix: 'myprefix',
 	logger: true
 }));
