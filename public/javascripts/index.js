@@ -343,9 +343,10 @@ $(document).ready(function() {
 			});
 
 			$('#register').submit(function(event) {
+				toggleModal()
 				$('#checkAll').addClass('d-none')
 				if (theError.length >= 1) {
-					console.log(theError);
+					toggleModal()
 					event.preventDefault()
 					$('#checkAll').removeClass('d-none')
 				}
