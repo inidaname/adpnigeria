@@ -554,9 +554,9 @@ router.get('/:subdomain/profile', isAuthenticated, (req, res) => {
 });
 
 router.get('/:subdomain/logout', isAuthenticated, (req, res) => {
-	res.cookie('user_id', req.cookies.user_id,{domain: '.lvh.me', expires: new Date(Date.now() - 900000) });
-	res.cookie('admin_id', req.cookies.user_id,{domain: '.lvh.me', expires: new Date(Date.now() - 900000) });
-	res.cookie('admin_req', req.cookies.user_id,{domain: '.lvh.me', expires: new Date(Date.now() - 900000) });
+	res.cookie('user_id', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 900000) });
+	res.cookie('admin_id', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 900000) });
+	res.cookie('admin_req', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 900000) });
 	res.clearCookie('user_id');
 	res.clearCookie('admin_id');
 	res.clearCookie('admin_req');
