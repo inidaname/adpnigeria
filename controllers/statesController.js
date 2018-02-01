@@ -13,6 +13,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 var Nigeria = mongojs(process.env.DB_URL, ['PollingUnits', 'Senates', 'FederalConstituency']);
 
 router.get('/', (req, res) => {
+	req.app.locals.layout = 'layout';
 	var states = [{_id: "ABIA"}, {_id: "ADAMAWA"}, {_id: "AKWA IBOM"}, {_id: "ANAMBRA"}, {_id: "BAUCHI"}, {_id: "BAYELSA"}, {_id: "BENUE"}, {_id: "BORNO"}, {_id: "CROSS RIVER"}, {_id: "DELTA"}, {_id: "EBONYI"}, {_id: "EDO"}, {_id: "EKITI"}, {_id: "ENUGU"}, {_id: "FCT"}, {_id: "GOMBE"}, {_id: "IMO"}, {_id: "JIGAWA"}, {_id: "KADUNA"}, {_id: "KANO"}, {_id: "KATSINA"}, {_id: "KEBBI"}, {_id: "KOGI"}, {_id: "KWARA"}, {_id: "LAGOS"}, {_id: "NASARAWA"}, {_id: "NIGER"}, {_id: "OGUN"}, {_id: "ONDO"}, {_id: "OSUN"}, {_id: "OYO"}, {_id: "PLATEAU"}, {_id: "RIVERS"}, {_id: "SOKOTO"}, {_id: "TARABA"}, {_id: "YOBE"}, {_id: "ZAMFARA"}];
 	res.status(200).render('states', {title: 'About the States', location: states, state: true, header: req.headers.authorization})
 
@@ -21,6 +22,7 @@ router.get('/', (req, res) => {
 
 
 router.get('/:states', (req, res) => {
+	req.app.locals.layout = 'layout';
 	var states = ["ABIA", "ADAMAWA", "AKWA IBOM", "ANAMBRA", "BAUCHI", "BAYELSA", "BENUE", "BORNO", "CROSS RIVER", "DELTA", "EBONYI", "EDO", "EKITI", "ENUGU", "FCT", "GOMBE", "IMO", "JIGAWA", "KADUNA", "KANO", "KATSINA", "KEBBI", "KOGI", "KWARA", "LAGOS", "NASARAWA", "NIGER", "OGUN", "ONDO", "OSUN", "OYO", "PLATEAU", "RIVERS", "SOKOTO", "TARABA", "YOBE", "ZAMFARA"];
 	var listOfthing = {
 		active: false
@@ -77,6 +79,8 @@ router.get('/:states', (req, res) => {
 });
 
 router.get('/:states/lga', (req, res) => {
+
+	req.app.locals.layout = 'layout';
 
 		var thisGuy = {
 		  set current(name) {
