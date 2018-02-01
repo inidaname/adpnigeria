@@ -12,7 +12,7 @@ const methodoverride = require('method-override');
 const moment = require('moment');
 const jwt = require('jsonwebtoken');
 const favicon = require('serve-favicon');
-// const sassMiddleware = require('node-sass-middleware');
+const sassMiddleware = require('node-sass-middleware');
 const cookieParser = require('cookie-parser');
 const request = require('request');
 const cookieSession = require('cookie-session')
@@ -120,12 +120,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(expressSanitizer());
 app.use(cookieParser());
 //
-// app.use(sassMiddleware({
-//   src: path.join(__dirname, 'public'),
-//   dest: path.join(__dirname, 'public'),
-//   indentedSyntax: false, // true = .sass and false = .scss
-//   sourceMap: true
-// }));
+app.use(sassMiddleware({
+  src: path.join(__dirname, 'public'),
+  dest: path.join(__dirname, 'public'),
+  indentedSyntax: false, // true = .sass and false = .scss
+  sourceMap: true
+}));
 
 
 app.use(subdomain({
