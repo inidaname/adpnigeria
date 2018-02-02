@@ -247,6 +247,7 @@ router.get('/getLGA', function (req, res) {
 
 router.post('/', (req, res) => {
 	var body = req.body
+	body.hashUser = md5(moment().format() + body.full_name + body.phone_number)
 
 	// console.log(body);
 	request.post(
