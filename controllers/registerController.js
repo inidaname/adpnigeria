@@ -270,6 +270,16 @@ router.post('/', (req, res) => {
 
 							}
 						}, function (err, info) {
+							// sending sms for confirmation
+						  if (phone_number.val() !== '') {
+							  var owneremail = process.env.SMSACCT;
+							  var subacct = process.env.SUBACCT;
+							  var subacctpwd = process.env.SUBACCTPWD;
+							  var senderNum = 'ADP Office';
+								var SMSmes = 'Hello '+bodies.body.full_name+' \nYour registration as a member of ADP was succesful your membership ID is: '+bodies.body.MemberAuth.TempID +'. \n#TheCredibleAlternative \nThank You \nOne Destiny';
+								request.post('http://www.smslive247.com/http/index.aspx?cmd=sendquickmsg&owneremail='+owneremail+'&subacct='+subacct+'&subacctpwd='+subacctpwd+'&message='+SMSmes+'&sender='+senderNum+'&sendto='+bodies.body.phone_number+'&msgtype=0');
+						  }
+
 							if (!err) {
 								console.log('Message sent: %s', info.messageId);
 								// Preview only available when sending through an Ethereal account
