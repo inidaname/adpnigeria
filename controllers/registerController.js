@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
 const mongojs = require('mongojs');
 const moment = require('moment');
+const md5 = require('md5');
 const hbs = require('nodemailer-express-handlebars');
 const nodemailer = require('nodemailer');
 const request = require('request');
