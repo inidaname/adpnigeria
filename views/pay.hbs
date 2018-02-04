@@ -40,7 +40,7 @@
 <div class="d-flex w-100 p-4 justify-content-around align-items-center">
 	<div class="d-flex w-50 m-auto bg-light p-4 border border-2 fullM flex-column">
 		<h3 class="text-center">Online Payment Space</h3>
-		<p>Member Name: <strong id="full_name">{{docs.full_name}}</strong> <br> Phone Number: <strong id="phone_number">08035938903</strong> <br>Email: <strong id="your_email">saniyhassan@gmail.com</strong> <br> TID Number: <strong>{{docs.MemberAuth.TempID}}</strong>			</p>
+		<p>Member Name: <strong id="full_name">{{docs.full_name}}</strong> <br> Phone Number: <strong id="phone_number">{{docs.phone_number}}</strong> <br>Email: <strong id="your_email">{{docs.email}}</strong> <br> TID Number: <strong>{{docs.MemberAuth.TempID}}</strong>			</p>
 
 		<div class="form-group">
 			<label for="pay_cat"><abbr title="Naira">N</abbr>100 Payment for</label>
@@ -132,7 +132,7 @@
             }
 
             $.post('paid', paidData, function(data, textStatus, xhr) {
-              location.replace("dashboard.actiondemocraticparty.org");
+              location.replace("http://dashboard.actiondemocraticparty.org");
             });
           }
         }
@@ -189,8 +189,6 @@
 									})
 									.done(function(data) {
 										window.location.replace("http://dashboard.actiondemocraticparty.org")
-										console.log("success", data);
-
 									})
 									.fail(function(err) {
 										console.log("error", err);

@@ -30,7 +30,7 @@ $(document).ready(function() {
 				$('#loading').modal('toggle');
 				setTimeout(function () {
 					$('#loading').modal('toggle');
-				}, 7000);
+				}, 4000);
 			}
 
 			var stateReg = $('#stateReg'), localgovt = $('#localgovt'), wardCT = $('#wardCT'), pollingUnit = $('#pollingUnit')
