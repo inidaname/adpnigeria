@@ -365,11 +365,11 @@ $(document).ready(function() {
 					$('#amountVal').val(25000)
 					$('#amount').html(250.00)
 				} else if ($('#pay_subs').val() === '6 Months') {
-					$('#amountVal').val(70000)
-					$('#amount').html(700.00)
+					$('#amountVal').val(40000)
+					$('#amount').html(400.00)
 				} else if ($('#pay_subs').val() === '1 Year') {
-					$('#amountVal').val(130000)
-					$('#amount').html('1,300.00')
+					$('#amountVal').val(70000)
+					$('#amount').html('700.00')
 				}
 			});
 
