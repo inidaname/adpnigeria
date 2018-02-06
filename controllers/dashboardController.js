@@ -34,7 +34,7 @@ function isAuthenticated(req, res, next) {
 	  return next();
   } else {
 	  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-	  res.redirect('http://actiondemocraticparty.org/');
+	  res.redirect('https://actiondemocraticparty.org/');
   }
 }
 function isAdmin(req, res, next) {
