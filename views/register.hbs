@@ -156,7 +156,7 @@
 
 			<!-- states and address registration -->
 			<div class="w-50 fullM m-2 d-flex flex-column">
-				<div class="card w-100 bg-light">
+				<div class="card w-100 d-md-none bg-light">
 				  <div class="card-body">
 					  <p>Please select <strong>State</strong> where you are registered to vote, a list of all pulling units, wards and local govt area in the selected state will be available</p>
 					  <!-- <p>You can search with your <strong>Local Govt. Area, Ward or Pulling Unit</strong> whichever maybe familiar to you</p>
@@ -175,7 +175,7 @@
 					<!-- select name of your state -->
 					<div class="form-group">
 						<label for="stateReg">State </label>
-						<select class="form-control" id="stateReg" name="stName"></select>
+						<select class="form-control" required id="stateReg" name="stName"></select>
 						<input type="hidden" id="grabST" name="stName" disabled class="form-control" value="">
 					</div>
 					<div class="form-group">
