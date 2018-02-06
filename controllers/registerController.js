@@ -48,7 +48,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('http://dashboard.actiondemocraticparty.org');
+  res.redirect('https://dashboard.actiondemocraticparty.org');
 }
 
 

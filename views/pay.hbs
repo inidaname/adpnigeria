@@ -28,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <span id="fillForm" class="text-danger"></span>
-        <a href="http://dashboard.actiondemocraticparty.org" class="btn btn-sm btn-success">Paid Already</a>
+        <a href="https://dashboard.actiondemocraticparty.org" class="btn btn-sm btn-success">Paid Already</a>
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Let Me Pay On Web</button>
         <button type="button" onclick="payHere()" id="chBtn" class="btn btn-sm btn-primary">I Dialed the Code</button>
         <button type="button" onclick="payUp()" id="PayUp" class="btn btn-sm btn-primary d-none">Send</button>
@@ -70,7 +70,7 @@
 			<script src="https://js.paystack.co/v1/inline.js"></script>
 			<button type="button" id="payBtn" class="btn btn-primary btn-lg">Pay Here</button>
 			<div class="col-md-12">
-				<img data-src="http://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
+				<img data-src="https://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
 			</div>
 			<script>
 				document.onreadystatechange = function() {
@@ -132,7 +132,7 @@
             }
 
             $.post('paid', paidData, function(data, textStatus, xhr) {
-              location.replace("http://dashboard.actiondemocraticparty.org");
+              location.replace("https://dashboard.actiondemocraticparty.org");
             });
           }
         }
@@ -188,7 +188,7 @@
 										data: {MemberVerified: true}
 									})
 									.done(function(data) {
-										window.location.replace("http://dashboard.actiondemocraticparty.org")
+										window.location.replace("https://dashboard.actiondemocraticparty.org")
 									})
 									.fail(function(err) {
 										console.log("error", err);

@@ -157,7 +157,7 @@
                 response.purpose = "Payment for contesting " + document.getElementById('positionCon').value
                 response.status = "Success"
                 response.userId = getCookie('user_id')
-                $.post('http://actiondemocraticparty.org/pay/paid', response, function(data, textStatus, xhr) {
+                $.post('https://actiondemocraticparty.org/pay/paid', response, function(data, textStatus, xhr) {
                   console.log(response);
                   $.ajax({
                     url: 'http://192.169.231.145:8888/api/interest/'+document.getElementById('docId').value,
