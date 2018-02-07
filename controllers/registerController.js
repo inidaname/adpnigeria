@@ -8,6 +8,7 @@ const mongojs = require('mongojs');
 const moment = require('moment');
 const md5 = require('md5');
 const hbs = require('nodemailer-express-handlebars');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const request = require('request');
 
