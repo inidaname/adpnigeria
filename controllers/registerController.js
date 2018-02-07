@@ -35,6 +35,22 @@ transporter.use('compile', hbs({
 }));
 
 
+//random codes for mail verification
+random = (howMany, chars) => {
+    chars = chars
+        || "ABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    let rnd = crypto.randomBytes(howMany)
+        , value = new Array(howMany)
+        , len = chars.length;
+
+    for (let i = 0; i < howMany; i++) {
+        value[i] = chars[rnd[i] % len]
+    };
+
+    return value.join('');
+}
+
+
 
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({extended: true}));
@@ -191,8 +207,6 @@ router.get('/getPolling', function (req, res) {
 router.post('/contact', (req, res) => {
   var body = req.body
 
-  console.log(body);
-
   request.post(
 	  process.env.ADDR+'/contact',
 	  {json: body},
@@ -210,14 +224,14 @@ router.post('/contact', (req, res) => {
 router.post('createExco', isAuthenticated, (req, res) => {
 	   // console.log(req.body);
 	   var body = {
-			position: req.body.positionReg,
-		   personalInfo: req.body.personalInfo,
-		   adminInfo: req.body.adminInfo,
-		   level: req.body.levelReg,
-			state: req.body.state,
-			lga: req.body.lga,
-			ward: req.body.ward,
-			pollingUnit: req.body.pollingUnit
+				position: req.body.positionReg,
+				personalInfo: req.body.personalInfo,
+				adminInfo: req.body.adminInfo,
+				level: req.body.levelReg,
+				state: req.body.state,
+				lga: req.body.lga,
+				ward: req.body.ward,
+				pollingUnit: req.body.pollingUnit
 	   }
 
 	   request.post(
@@ -249,6 +263,8 @@ router.get('/getLGA', function (req, res) {
 router.post('/', (req, res) => {
 	var body = req.body
 	body.hashUser = md5(moment().format() + body.full_name + body.phone_number)
+	body.mobileCode =  random(3) +''+ random(4)
+	body.TempID = random(6) +''+ random(3)
 
 	// console.log(body);
 	request.post(
@@ -258,7 +274,17 @@ router.post('/', (req, res) => {
 			 // console.log(error, response, body);
 			  if (!error) {
 					if (bodies.body) {
-						// console.log(bodies.body);
+
+						// sending sms for confirmation
+
+							var owneremail = process.env.SMSACCT;
+							var subacct = process.env.SUBACCT;
+							var subacctpwd = process.env.SUBACCTPWD;
+							var senderNum = 'ADP Office';
+							var SMSmes = 'Hello '+bodies.body.full_name+' \nYour registration as a member of ADP was succesful your membership ID is: '+bodies.body.MemberAuth.TempID +'. \n#TheCredibleAlternative \nThank You \nOne Destiny';
+							request.post('http://www.smslive247.com/http/index.aspx?cmd=sendquickmsg&owneremail='+owneremail+'&subacct='+subacct+'&subacctpwd='+subacctpwd+'&message='+SMSmes+'&sender='+senderNum+'&sendto='+bodies.body.phone_number+'&msgtype=0');
+
+
 						transporter.sendMail({
 							from: 'ADP National Secretariat <contact@adp.ng>', // sender address
 							to: bodies.body.email, // list of receivers
@@ -270,16 +296,6 @@ router.post('/', (req, res) => {
 
 							}
 						}, function (err, info) {
-							// sending sms for confirmation
-						  if (phone_number.val() !== '') {
-							  var owneremail = process.env.SMSACCT;
-							  var subacct = process.env.SUBACCT;
-							  var subacctpwd = process.env.SUBACCTPWD;
-							  var senderNum = 'ADP Office';
-								var SMSmes = 'Hello '+bodies.body.full_name+' \nYour registration as a member of ADP was succesful your membership ID is: '+bodies.body.MemberAuth.TempID +'. \n#TheCredibleAlternative \nThank You \nOne Destiny';
-								request.post('http://www.smslive247.com/http/index.aspx?cmd=sendquickmsg&owneremail='+owneremail+'&subacct='+subacct+'&subacctpwd='+subacctpwd+'&message='+SMSmes+'&sender='+senderNum+'&sendto='+bodies.body.phone_number+'&msgtype=0');
-						  }
-
 							if (!err) {
 								console.log('Message sent: %s', info.messageId);
 								// Preview only available when sending through an Ethereal account
