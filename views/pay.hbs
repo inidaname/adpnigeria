@@ -28,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <span id="fillForm" class="text-danger"></span>
-        <a href="https://dashboard.actiondemocraticparty.org" class="btn btn-sm btn-success">Paid Already</a>
+        <a href="https://dashboard.adp.ng" class="btn btn-sm btn-success">Paid Already</a>
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Let Me Pay On Web</button>
         <button type="button" onclick="payHere()" id="chBtn" class="btn btn-sm btn-primary">I Dialed the Code</button>
         <button type="button" onclick="payUp()" id="PayUp" class="btn btn-sm btn-primary d-none">Send</button>
@@ -132,7 +132,7 @@
             }
 
             $.post('paid', paidData, function(data, textStatus, xhr) {
-              location.replace("https://dashboard.actiondemocraticparty.org");
+              location.replace("https://dashboard.adp.ng");
             });
           }
         }
@@ -188,7 +188,7 @@
 										data: {MemberVerified: true}
 									})
 									.done(function(data) {
-										window.location.replace("https://dashboard.actiondemocraticparty.org")
+										window.location.replace("https://dashboard.adp.ng")
 									})
 									.fail(function(err) {
 										console.log("error", err);

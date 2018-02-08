@@ -65,7 +65,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('https://dashboard.actiondemocraticparty.org');
+  res.status(301).redirect('https://dashboard.adp.ng');
 }
 
 
@@ -304,10 +304,10 @@ router.post('/', (req, res) => {
 
 								// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
 								// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'});
+								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'});
 								res.redirect('/pay/')
 							} else {
-								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'})
+								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'})
 								res.redirect('/pay/')
 							}
 						});
