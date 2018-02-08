@@ -23,7 +23,7 @@ req.app.locals.layout = 'others/dashboard';
 // 			theUserMe = theUser
 // 			res.cookie('admin_id', theUser.personalInfo._id)
 // 		} else {
-// 			res.redirect('dashboard.actiondemocraticparty.org');
+// 			res.redirect('dashboard.adp.ng');
 // 		}
 // 	})
 // }

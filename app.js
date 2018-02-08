@@ -100,7 +100,7 @@ app.use(function(req, res, next) {
 app.use(cookieSession({
   name: 'session',
   keys: [process.env.key1, process.env.key2],
-  cookie: { domain: '.actiondemocraticparty.org', maxAge: 100000000000 }
+  cookie: { domain: '.adp.ng', maxAge: 100000000000 }
 }))
 // app.use(session({
 // 	secret: process.env.secretKey,
@@ -129,7 +129,7 @@ app.use(cookieParser());
 
 
 app.use(subdomain({
-	baseUrl: 'actiondemocraticparty.org',
+	baseUrl: 'adp.ng',
 	prefix: 'myprefix',
 	logger: true
 }));
