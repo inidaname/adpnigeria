@@ -12,7 +12,7 @@ var jsonADPApi = (() => {
 	// receiving api keys for usage
 	apiKey.authApi = function (apiKey.key) {
 		$.ajax({
-			url: 'api.adp.ng/auth/login',
+			url: 'api.actiondemocraticparty.org/auth/login',
 			type: 'POST',
 			dataType: 'JSON',
 			data: {apiKey: apiKey.key}

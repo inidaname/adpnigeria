@@ -34,7 +34,7 @@ function isAuthenticated(req, res, next) {
 	  return next();
   } else {
 	  // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-	  res.redirect('https://adp.ng/');
+	  res.redirect('https://actiondemocraticparty.org/');
   }
 }
 function isAdmin(req, res, next) {
@@ -554,13 +554,13 @@ router.get('/:subdomain/profile', isAuthenticated, (req, res) => {
 });
 
 router.get('/:subdomain/logout', isAuthenticated, (req, res) => {
-	res.cookie('user_id', req.cookies.user_id,{domain: '.adp.ng', expires: new Date(Date.now() - 90000000000) });
-	res.cookie('admin_id', req.cookies.user_id,{domain: '.adp.ng', expires: new Date(Date.now() - 90000000000) });
-	res.cookie('admin_req', req.cookies.user_id,{domain: '.adp.ng', expires: new Date(Date.now() - 90000000000) });
+	res.cookie('user_id', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 90000000000) });
+	res.cookie('admin_id', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 90000000000) });
+	res.cookie('admin_req', req.cookies.user_id,{domain: '.actiondemocraticparty.org', expires: new Date(Date.now() - 90000000000) });
 	res.clearCookie('user_id');
 	res.clearCookie('admin_id');
 	res.clearCookie('admin_req');
-	res.redirect('adp.ng');
+	res.redirect('actiondemocraticparty.org');
 })
 
 

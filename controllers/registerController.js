@@ -65,7 +65,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.status(301).redirect('https://dashboard.adp.ng');
+  res.status(301).redirect('https://dashboard.actiondemocraticparty.org');
 }
 
 
@@ -287,7 +287,7 @@ router.post('/', (req, res) => {
 
 
 						transporter.sendMail({
-							from: 'ADP National Secretariat <contact@adp.ng>', // sender address
+							from: 'ADP National Secretariat <contact@actiondemocraticparty.org>', // sender address
 							to: bodies.body.email, // list of receivers
 							subject: bodies.body.full_name + ' Congratulations!, You are now A Member of ADP', // Subject line
 							template: 'emailtempl', // email template
@@ -304,10 +304,10 @@ router.post('/', (req, res) => {
 
 								// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
 								// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'});
+								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'});
 								res.redirect('/pay/')
 							} else {
-								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'})
+								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'})
 								res.redirect('/pay/')
 							}
 						});

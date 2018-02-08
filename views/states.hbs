@@ -22,7 +22,7 @@
   		  <p id="thisContact">
   			 <i class="fa fa-phone" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 000 0536</strong> &nbsp; &nbsp;
   			 <i class="fa fa-whatsapp" style="color: green; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">+234 906 182 5005</strong><br><br>
-  			 <i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">contact@adp.ng</strong>
+  			 <i class="fa fa-envelope" style="color: red; font-size: 25px;"></i>&nbsp;&nbsp; <strong style="font-size: 19px;">contact@actiondemocraticparty.org</strong>
   		  </p>
 		  {{/if}}
 		  <ul class="d-flex flex-row justify-content-between list-inline w-75 mt-2 mb-2 mr-auto ml-auto">
@@ -182,7 +182,7 @@ var ThisMember = {
 				$('#populate').append(`<div class='column is-one-third' onclick='getTheLGA("`+theOBJ[tellMe].name+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Local Govt: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
 			})
 
-			$.getJSON('https://adp.ng/register/senates', {stateReg: getThePlace}, function(jsonS, textStatus) {
+			$.getJSON('https://actiondemocraticparty.org/register/senates', {stateReg: getThePlace}, function(jsonS, textStatus) {
 
 				var senates = jsonS.sen
 				var constit = jsonS.fedc
@@ -283,7 +283,7 @@ var ThisMember = {
 		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getTheLGA+'</a></li>')
 
 		var emptyWARDPPL = []
-		$.getJSON('https://adp.ng/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
+		$.getJSON('https://actiondemocraticparty.org/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
 
 			var wardsBro = jsonW.docs
 			emptyWARDPPL = []
@@ -332,7 +332,7 @@ var ThisMember = {
 		$('#breadcrumb').append('<li><a href="#" aria-current="page" onclick="toReload()">'+getThePoll+'</a></li>')
 
 		var emptyWARDPPL = []
-		$.getJSON('https://adp.ng/register/getPolling', {wardName: getThePoll, stateName: getThePlace, localgovtName: getTheLGA}, function(jsonPU, textStatus) {
+		$.getJSON('https://actiondemocraticparty.org/register/getPolling', {wardName: getThePoll, stateName: getThePlace, localgovtName: getTheLGA}, function(jsonPU, textStatus) {
 
 
 
