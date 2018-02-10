@@ -98,8 +98,8 @@ nav {
 @media screen and (min-width: 200px) and (max-width: 900px) {
   .midTem {
     width: 100% !important;
-    padding: 10px !important;
-    margin: 30px !important; }
+    padding: 1px !important;
+    margin: 30px auto !important; }
     .midTem div, .midTem figure {
       margin: 0px;
       padding: 10px !important;
