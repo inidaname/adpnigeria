@@ -125,8 +125,8 @@ nav{
 	}
 	@include mQ('200px', '900px'){
 		width: 100% !important;
-		padding: 10px !important;
-		margin: 30px !important;
+		padding: 1px !important;
+		margin: 30px auto !important;
 		div, figure{
 			margin: 0px;
 			padding: 10px !important;
