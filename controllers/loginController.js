@@ -18,7 +18,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('https://dashboard.adp.ng');
+  res.status(200).redirect('https://dashboard.adp.ng');
 }
 
 router.get('/', isAuthenticated, (req, res) => {
