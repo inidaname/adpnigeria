@@ -18,7 +18,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('/');
+  res.status(200).redirect('https://dashboard.adp.ng');
 }
 
 router.get('/', isAuthenticated, (req, res) => {
@@ -35,9 +35,9 @@ router.post('/', (req, res) => {
 	  if (respo.full_name === req.body.full_name) {
 		  // req.session.user = respo._id
 
-		 res.cookie('user_id', respo._id, {domain: '.actiondemocraticparty.org', expires: new Date(Date.now() + 900000) });
+		 res.cookie('user_id', respo._id, {domain: '.adp.ng', expires: new Date(Date.now() + 900000) });
 		 if (respo.MemberVerified === false) {
-			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login, <span class='alert-danger'>Please note that you are yet to pay your membershi due, the system will take you to the payment page.</span> <br>Thank You", title: 'Membership'});
+			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login, Please note that you are yet to pay your membership due, the page will take you to the payment page. Thank You", title: 'Membership'});
 		 } else {
 			 res.render('login', {login: respo, status: 'success', message: respo.full_name+" You have successfully login your profile page will soon load", title: 'Membership'});
 		 }

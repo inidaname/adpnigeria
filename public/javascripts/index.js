@@ -30,7 +30,7 @@ $(document).ready(function() {
 				$('#loading').modal('toggle');
 				setTimeout(function () {
 					$('#loading').modal('toggle');
-				}, 7000);
+				}, 4000);
 			}
 
 			var stateReg = $('#stateReg'), localgovt = $('#localgovt'), wardCT = $('#wardCT'), pollingUnit = $('#pollingUnit')
@@ -343,9 +343,10 @@ $(document).ready(function() {
 			});
 
 			$('#register').submit(function(event) {
+				toggleModal()
 				$('#checkAll').addClass('d-none')
 				if (theError.length >= 1) {
-					console.log(theError);
+					toggleModal()
 					event.preventDefault()
 					$('#checkAll').removeClass('d-none')
 				}
@@ -361,14 +362,14 @@ $(document).ready(function() {
 
 			$('#pay_subs').change(function(event) {
 				if ($('#pay_subs').val() === '3 Months') {
+					$('#amountVal').val(25000)
+					$('#amount').html(250.00)
+				} else if ($('#pay_subs').val() === '6 Months') {
 					$('#amountVal').val(40000)
 					$('#amount').html(400.00)
-				} else if ($('#pay_subs').val() === '6 Months') {
-					$('#amountVal').val(70000)
-					$('#amount').html(700.00)
 				} else if ($('#pay_subs').val() === '1 Year') {
-					$('#amountVal').val(130000)
-					$('#amount').html('1,300.00')
+					$('#amountVal').val(70000)
+					$('#amount').html('700.00')
 				}
 			});
 

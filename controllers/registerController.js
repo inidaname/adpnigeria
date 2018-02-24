@@ -6,7 +6,9 @@ const cookieParser = require('cookie-parser');
 const cookieSession = require('cookie-session')
 const mongojs = require('mongojs');
 const moment = require('moment');
+const md5 = require('md5');
 const hbs = require('nodemailer-express-handlebars');
+const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const request = require('request');
 
@@ -34,6 +36,22 @@ transporter.use('compile', hbs({
 }));
 
 
+//random codes for mail verification
+random = (howMany, chars) => {
+    chars = chars
+        || "ABCDEFGHIJKLMNOPQRSTUWXYZ0123456789";
+    let rnd = crypto.randomBytes(howMany)
+        , value = new Array(howMany)
+        , len = chars.length;
+
+    for (let i = 0; i < howMany; i++) {
+        value[i] = chars[rnd[i] % len]
+    };
+
+    return value.join('');
+}
+
+
 
 router.use(cookieParser());
 router.use(bodyParser.urlencoded({extended: true}));
@@ -47,7 +65,7 @@ function isAuthenticated(req, res, next) {
       return next();
 
   // IF A USER ISN'T LOGGED IN, THEN REDIRECT THEM SOMEWHERE
-  res.redirect('dashboard.actiondemocraticparty.org');
+  res.status(200).redirect('https://dashboard.adp.ng');
 }
 
 
@@ -190,8 +208,6 @@ router.get('/getPolling', function (req, res) {
 router.post('/contact', (req, res) => {
   var body = req.body
 
-  console.log(body);
-
   request.post(
 	  process.env.ADDR+'/contact',
 	  {json: body},
@@ -209,14 +225,14 @@ router.post('/contact', (req, res) => {
 router.post('createExco', isAuthenticated, (req, res) => {
 	   // console.log(req.body);
 	   var body = {
-			position: req.body.positionReg,
-		   personalInfo: req.body.personalInfo,
-		   adminInfo: req.body.adminInfo,
-		   level: req.body.levelReg,
-			state: req.body.state,
-			lga: req.body.lga,
-			ward: req.body.ward,
-			pollingUnit: req.body.pollingUnit
+				position: req.body.positionReg,
+				personalInfo: req.body.personalInfo,
+				adminInfo: req.body.adminInfo,
+				level: req.body.levelReg,
+				state: req.body.state,
+				lga: req.body.lga,
+				ward: req.body.ward,
+				pollingUnit: req.body.pollingUnit
 	   }
 
 	   request.post(
@@ -247,16 +263,29 @@ router.get('/getLGA', function (req, res) {
 
 router.post('/', (req, res) => {
 	var body = req.body
+	body.hashUser = md5(moment().format() + body.full_name + body.phone_number)
+	body.mobileCode =  random(3) +''+ random(4)
+	body.TempID = random(6) +''+ random(3)
 
 	// console.log(body);
 	request.post(
 		 process.env.ADDR+'/register',
 		 { json: body},
 		 function (error, response, bodies) {
-			 console.log(error, response, body);
+			 // console.log(error, response, body);
 			  if (!error) {
 					if (bodies.body) {
-						// console.log(bodies.body);
+
+						// sending sms for confirmation
+
+							var owneremail = process.env.SMSACCT;
+							var subacct = process.env.SUBACCT;
+							var subacctpwd = process.env.SUBACCTPWD;
+							var senderNum = 'ADP Office';
+							var SMSmes = 'Hello '+bodies.body.full_name+' \nYour registration as a member of ADP was succesful your membership ID is: '+bodies.body.MemberAuth.TempID +'. \n#TheCredibleAlternative \nThank You \nOne Destiny';
+							request.post('http://www.smslive247.com/http/index.aspx?cmd=sendquickmsg&owneremail='+owneremail+'&subacct='+subacct+'&subacctpwd='+subacctpwd+'&message='+SMSmes+'&sender='+senderNum+'&sendto='+bodies.body.phone_number+'&msgtype=0');
+
+
 						transporter.sendMail({
 							from: 'ADP National Secretariat <contact@adp.ng>', // sender address
 							to: bodies.body.email, // list of receivers
@@ -275,11 +304,11 @@ router.post('/', (req, res) => {
 
 								// Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@blurdybloop.com>
 								// Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'});
-								res.redirect('http://dashboard.actiondemocraticparty.org')
+								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'});
+								res.redirect('/pay/')
 							} else {
-								res.cookie('user_id', bodies.body._id, {domain: '.actiondemocraticparty.org'})
-								res.redirect('http://dashboard.actiondemocraticparty.org')
+								res.cookie('user_id', bodies.body._id, {domain: '.adp.ng'})
+								res.redirect('/pay/')
 							}
 						});
 					}

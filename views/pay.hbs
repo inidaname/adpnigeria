@@ -3,7 +3,7 @@
     <div class="modal-content">
       <div class="modal-body text-center">
         <span  id="theImage">
-          <img data-src="https://res.cloudinary.com/inidaname/image/upload/v1517337850/payment_sbrwk9.jpg" class="cld-responsive img-rounded center-block w-75 ml-auto mr-auto">
+          <img data-src="https://res.cloudinary.com/inidaname/image/upload/v1517337850/payment.jpg" class="cld-responsive img-rounded center-block w-75 ml-auto mr-auto">
           <p class="w-50 mr-auto ml-auto mt-4 fullM text-center">
             Please if you have paid and you are still seeing this screen contact the Secretariat. Click I have Paid Already
           </p>
@@ -28,7 +28,7 @@
       </div>
       <div class="modal-footer">
         <span id="fillForm" class="text-danger"></span>
-        <a href="http://dashboard.actiondemocraticparty.org" class="btn btn-sm btn-success">Paid Already</a>
+        <a href="https://dashboard.adp.ng" class="btn btn-sm btn-success">Paid Already</a>
         <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Let Me Pay On Web</button>
         <button type="button" onclick="payHere()" id="chBtn" class="btn btn-sm btn-primary">I Dialed the Code</button>
         <button type="button" onclick="payUp()" id="PayUp" class="btn btn-sm btn-primary d-none">Send</button>
@@ -40,7 +40,7 @@
 <div class="d-flex w-100 p-4 justify-content-around align-items-center">
 	<div class="d-flex w-50 m-auto bg-light p-4 border border-2 fullM flex-column">
 		<h3 class="text-center">Online Payment Space</h3>
-		<p>Member Name: <strong id="full_name">{{docs.full_name}}</strong> <br> Phone Number: <strong id="phone_number">08035938903</strong> <br>Email: <strong id="your_email">saniyhassan@gmail.com</strong> <br> TID Number: <strong>{{docs.MemberAuth.TempID}}</strong>			</p>
+		<p>Member Name: <strong id="full_name">{{docs.full_name}}</strong> <br> Phone Number: <strong id="phone_number">{{docs.phone_number}}</strong> <br>Email: <strong id="your_email">{{docs.email}}</strong> <br> TID Number: <strong>{{docs.MemberAuth.TempID}}</strong>			</p>
 
 		<div class="form-group">
 			<label for="pay_cat"><abbr title="Naira">N</abbr>100 Payment for</label>
@@ -70,7 +70,7 @@
 			<script src="https://js.paystack.co/v1/inline.js"></script>
 			<button type="button" id="payBtn" class="btn btn-primary btn-lg">Pay Here</button>
 			<div class="col-md-12">
-				<img data-src="http://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
+				<img data-src="https://res.cloudinary.com/inidaname/image/upload/v1513395675/footer_tje4zo.png" style="width:90%; margin: 0 auto;" class="cld-responsive" alt="">
 			</div>
 			<script>
 				document.onreadystatechange = function() {
@@ -132,7 +132,7 @@
             }
 
             $.post('paid', paidData, function(data, textStatus, xhr) {
-              location.replace("dashboard.actiondemocraticparty.org");
+              location.replace("https://dashboard.adp.ng");
             });
           }
         }
@@ -141,7 +141,7 @@
 
 				function payWithPaystack() {
 					var handler = PaystackPop.setup({
-						key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+						key: 'pk_live_7ed395f69c06d004d9195244d253bfe5821e768f',
 						email: document.getElementById('your_email').innerHTML,
 						amount: document.getElementById('amountVal').value,
 						ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
@@ -188,9 +188,7 @@
 										data: {MemberVerified: true}
 									})
 									.done(function(data) {
-										window.location.replace("http://dashboard.actiondemocraticparty.org")
-										console.log("success", data);
-
+										window.location.replace("https://dashboard.adp.ng")
 									})
 									.fail(function(err) {
 										console.log("error", err);

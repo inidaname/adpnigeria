@@ -20,7 +20,7 @@
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
-
+<!--
 <div class="d-flex flex-column w-50 fullM mr-auto ml-auto p-4 mt-4 mb-4">
   <div id="accordion" aria-expanded="false" role="tablist">
     <div class="card">
@@ -46,7 +46,7 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <input type="hidden" name="status" value="{{status}}" id="status">
@@ -63,9 +63,9 @@ document.onreadystatechange = function () {
 			 	window.location.replace('/pay/')
 			} else {
 				if (hostgrab[0] === "www") {
-					window.location.replace('http://dashboard.'+hostgrab[1]+'.'+hostgrab[2]+':5000')
+					window.location.replace('https://dashboard.'+hostgrab[1]+'.'+hostgrab[2])
 				} else {
-					window.location.replace('http://dashboard.'+hostgrab[0]+'.'+hostgrab[1]+':5000')
+					window.location.replace('https://dashboard.'+hostgrab[0]+'.'+hostgrab[1])
 				}
 			}
 		 } else {

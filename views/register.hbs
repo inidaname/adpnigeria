@@ -84,7 +84,6 @@
 						<figcaption class="figure-caption" id="ShowImage"></figcaption>
 					</figure>
 					<div class="form-group">
-            <input type="text" hidden name="headed" value="{{header}}">
 						<label class="">Upload Passport</label> &nbsp;
 						<button type="button" id="upload_widget_opener" class="btn btn-success btn-lg">Click Here</button>
 						<!-- <input type="file" title="Choose a Passport" id="passport" onchange="PreviewIcon()" class="btn-primary" accept="image/*"> -->
@@ -157,7 +156,7 @@
 
 			<!-- states and address registration -->
 			<div class="w-50 fullM m-2 d-flex flex-column">
-				<div class="card w-100 bg-light">
+				<div class="card w-100 d-md-none bg-light">
 				  <div class="card-body">
 					  <p>Please select <strong>State</strong> where you are registered to vote, a list of all pulling units, wards and local govt area in the selected state will be available</p>
 					  <!-- <p>You can search with your <strong>Local Govt. Area, Ward or Pulling Unit</strong> whichever maybe familiar to you</p>
@@ -176,7 +175,7 @@
 					<!-- select name of your state -->
 					<div class="form-group">
 						<label for="stateReg">State </label>
-						<select class="form-control" id="stateReg" name="stName"></select>
+						<select class="form-control" required id="stateReg" name="stName"></select>
 						<input type="hidden" id="grabST" name="stName" disabled class="form-control" value="">
 					</div>
 					<div class="form-group">
@@ -207,7 +206,7 @@
 					<input type="hidden" name="StateConstituency" id="stateConp" value="">
 					<div class="form-group">
 						<label for="countryRes">Country of Residence</label>
-						<select required id="countryRes" data-role="country-selector" class="form-control" name="">
+						<select required id="countryRes" data-role="country-selector" class="form-control" name="resCountry">
 							<option value="">Select Your Country</option>
 							{{#each country}}
 							<option value="{{name}}">{{name}}</option>

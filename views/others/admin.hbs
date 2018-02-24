@@ -67,7 +67,7 @@ var ThisMember = {
 		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getThePlace+'</a></li>')
 
 		emptyLGAPPL = []
-		$.getJSON('http://actiondemocraticparty.org/register/getLGA', {statePlace: getThePlace}, function(json, textStatus) {
+		$.getJSON('https://adp.ng/register/getLGA', {statePlace: getThePlace}, function(json, textStatus) {
 			var theOBJ = []
 
 			json.forEach((item) => {
@@ -91,7 +91,7 @@ var ThisMember = {
 				$('#populate').append(`<div class='column is-one-third' onclick='getTheLGA("`+theOBJ[tellMe].name+`", "`+getThePlace+`")'> <div class='box'> <p class='is-size-6'>Name of Local Govt: <strong> `+theOBJ[tellMe].name+`</strong></p> <p class='is-size-6'>Number of Members <strong>`+theOBJ[tellMe].count+`</strong></p> </div></div>`)
 			})
 
-			$.getJSON('http://actiondemocraticparty.org/register/senates', {stateReg: getThePlace}, function(jsonS, textStatus) {
+			$.getJSON('https://adp.ng/register/senates', {stateReg: getThePlace}, function(jsonS, textStatus) {
 
 				var senates = jsonS.sen
 				var constit = jsonS.fedc
@@ -192,7 +192,7 @@ var ThisMember = {
 		$('#breadcrumb').append('<li><a href="#" class="is-active" aria-current="page" onclick="toReload()">'+getTheLGA+'</a></li>')
 
 
-		$.getJSON('http://actiondemocraticparty.org/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
+		$.getJSON('https://adp.ng/register/getWARDout', {stateReg: getThePlace, lgaReg: getTheLGA}, function(jsonW, textStatus) {
 
 			console.log(jsonW);
 			var theOBJ = []
@@ -231,7 +231,7 @@ var ThisMember = {
 		$('#breadcrumb').append('<li><a href="#" aria-current="page" onclick="toReload()">'+getThePoll+'</a></li>')
 
 		var emptyWARDPPL = []
-		$.getJSON('http://actiondemocraticparty.org/register/getPolling', {wardName: getThePoll, stateName: getThePlace, localgovtName: getTheLGA}, function(jsonPU, textStatus) {
+		$.getJSON('https://adp.ng/register/getPolling', {wardName: getThePoll, stateName: getThePlace, localgovtName: getTheLGA}, function(jsonPU, textStatus) {
 
 
 

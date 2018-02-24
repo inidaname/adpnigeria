@@ -122,7 +122,7 @@
           if (!isNaN(finalAmount)) {
 
             var handler = PaystackPop.setup({
-              key: 'pk_test_d718965961de7b1d678c7a70fbcfaef072800df9',
+              key: 'pk_live_7ed395f69c06d004d9195244d253bfe5821e768f',
               email: "{{json.email}}",
               amount: finalAmount,
               ref: '' + Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
@@ -157,7 +157,7 @@
                 response.purpose = "Payment for contesting " + document.getElementById('positionCon').value
                 response.status = "Success"
                 response.userId = getCookie('user_id')
-                $.post('http://actiondemocraticparty.org/pay/paid', response, function(data, textStatus, xhr) {
+                $.post('https://adp.ng/pay/paid', response, function(data, textStatus, xhr) {
                   console.log(response);
                   $.ajax({
                     url: 'http://192.169.231.145:8888/api/interest/'+document.getElementById('docId').value,
